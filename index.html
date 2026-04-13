@@ -134,22 +134,33 @@ times.forEach(t => {
 const daysDiv = document.getElementById("days");
 
 for (const day in timetable) {
- if (day === today) {
-  col.style.background = "#fff3cd";
-  col.style.border = "2px solid #ff9800";
-}
+
   const col = document.createElement("div");
   col.className = "day-column";
+
+  // 今日の曜日チェック（ここでOK）
+  if (day === today) {
+    col.style.background = "#fff3cd";
+    col.style.border = "2px solid #ff9800";
+  }
 
   const title = document.createElement("div");
   title.className = "day-title";
   title.innerText = day;
   col.appendChild(title);
 
-  timetable[day].forEach(sub => {
+  timetable[day].forEach((sub, i) => {
     const div = document.createElement("div");
     div.className = "cell";
     div.innerText = sub;
+
+    // 今の授業（これ入れるなら）
+    const current = getCurrentPeriod();
+    if (day === today && i === current) {
+      div.style.background = "#ff5722";
+      div.style.color = "white";
+    }
+
     col.appendChild(div);
   });
 
