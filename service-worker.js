@@ -1,4 +1,4 @@
-const CACHE_NAME = 'timetable-v1';
+const CACHE_NAME = 'timetable-v2';
 
 const urlsToCache = [
   '/',
@@ -6,7 +6,7 @@ const urlsToCache = [
   '/manifest.json'
 ];
 
-// ƒCƒ“ƒXƒg[ƒ‹
+// ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«
 self.addEventListener('install', event => {
   self.skipWaiting();
   event.waitUntil(
@@ -15,7 +15,7 @@ self.addEventListener('install', event => {
   );
 });
 
-// —LŒø‰»
+// æœ‰åŠ¹åŒ–
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys => {
@@ -31,7 +31,7 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
-// ’ÊM§Œä
+// é€šä¿¡åˆ¶å¾¡
 self.addEventListener('fetch', event => {
   event.respondWith(
     fetch(event.request)
