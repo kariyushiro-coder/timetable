@@ -29,33 +29,39 @@ header {
   gap: 10px;
 }
 
-/* 曜日カード */
+/* 列 */
+.column {
+  min-width: 120px;
+}
+
+/* 時間列 */
+.time {
+  background: #ddd;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+/* 曜日 */
 .day {
-  min-width: 250px;
   background: white;
   border-radius: 15px;
   padding: 10px;
+  min-width: 180px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-.day-title {
+.title {
   font-weight: bold;
-  margin-bottom: 10px;
   text-align: center;
+  margin-bottom: 10px;
   color: #2196f3;
 }
 
-/* 授業 */
-.card {
-  background: #f9f9f9;
+.cell {
   margin: 5px 0;
-  padding: 10px;
-  border-radius: 10px;
-}
-
-.period {
-  font-size: 12px;
-  color: #2196f3;
+  padding: 8px;
+  background: #f9f9f9;
+  border-radius: 8px;
 }
 </style>
 </head>
@@ -67,6 +73,12 @@ header {
 <div class="container" id="content"></div>
 
 <script>
+// 開始時間
+const times = [
+  "8:30","9:30","10:30","11:30","12:30","13:30","14:30"
+];
+
+// 時間割
 const timetable = {
   "月": ["数学","英語","理科","社会","体育","音楽","自習"],
   "火": ["英語","数学","理科","美術","体育","国語","自習"],
@@ -78,24 +90,42 @@ const timetable = {
 
 const content = document.getElementById("content");
 
+// 時間列（固定）
+const timeCol = document.createElement("div");
+timeCol.className = "column time";
+
+const timeTitle = document.createElement("div");
+timeTitle.className = "title";
+timeTitle.innerText = "開始";
+timeCol.appendChild(timeTitle);
+
+times.forEach(t => {
+  const div = document.createElement("div");
+  div.className = "cell";
+  div.innerText = t;
+  timeCol.appendChild(div);
+});
+
+content.appendChild(timeCol);
+
+// 各曜日
 for (const day in timetable) {
-  const dayDiv = document.createElement("div");
-  dayDiv.className = "day";
+  const col = document.createElement("div");
+  col.className = "column day";
 
   const title = document.createElement("div");
-  title.className = "day-title";
+  title.className = "title";
   title.innerText = day + "曜日";
+  col.appendChild(title);
 
-  dayDiv.appendChild(title);
-
-  timetable[day].forEach((subject, i) => {
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `<div class="period">${i+1}限</div>${subject}`;
-    dayDiv.appendChild(card);
+  timetable[day].forEach(subject => {
+    const div = document.createElement("div");
+    div.className = "cell";
+    div.innerText = subject;
+    col.appendChild(div);
   });
 
-  content.appendChild(dayDiv);
+  content.appendChild(col);
 }
 
 // Service Worker
