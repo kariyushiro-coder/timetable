@@ -110,8 +110,10 @@ function getCurrentPeriod() {
   }
   return -1;
 }
+<!--
 const times = ["8:50","10:30","12:50","14:30","16:10","17:50","19:30"];
-
+-->
+  
 const timetable = {
   "月": ["教職","","","日本史","総合","",""],
   "火": ["教育","世界史","外書","","","アジア史",""],
@@ -123,11 +125,10 @@ const timetable = {
 
 // 時間列
 const timeDiv = document.getElementById("time");
-times.forEach((t, i) => {
-
+periods.forEach((p, i) => {
   const div = document.createElement("div");
   div.className = "time-cell";
-  div.innerText = t;
+  div.innerText = p.start + "〜" + p.end;                           
   timeDiv.appendChild(div);
 
   // ★3限のあとに昼休み
