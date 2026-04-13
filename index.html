@@ -134,9 +134,9 @@ times.forEach(t => {
 const daysDiv = document.getElementById("days");
 
 for (const day in timetable) {
-  if (day === today) {
-  title.style.background = "#ff9800";
-  title.style.color = "white";
+ if (day === today) {
+  col.style.background = "#fff3cd";
+  col.style.border = "2px solid #ff9800";
 }
   const col = document.createElement("div");
   col.className = "day-column";
