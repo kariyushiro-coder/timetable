@@ -1,33 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>時間割アプリ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <style>
 body {
   margin: 0;
   font-family: sans-serif;
 }
 
-/* 全体 */
+/* 全体横並び */
 .wrapper {
   display: flex;
 }
 
-/* 左（時間）固定 */
+/* =========================
+   左：時間列（完全固定）
+========================= */
 .time-column {
-  background: #eee;
+  width: 80px;
+  min-width: 80px;
 }
 
+/* 1セル（左列） */
 .time-cell {
   height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 1px solid #ddd;
-  width: 80px;
+  background: #eee;
+
   position: sticky;
   left: 0;
-  background: #eee;
   z-index: 10;
 }
 
-/* 右（スクロール） */
+/* =========================
+   右：スクロール領域
+========================= */
 .scroll-area {
   overflow-x: auto;
   display: flex;
@@ -38,16 +51,22 @@ body {
   min-width: 120px;
 }
 
-/* 曜日 */
+/* 曜日タイトル */
 .day-title {
-  text-align: center;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: bold;
-  padding: 10px;
   background: #f5f5f5;
   border: 1px solid #ddd;
+
+  position: sticky;
+  top: 0;
+  z-index: 5;
 }
 
-/* セル */
+/* 通常セル */
 .cell {
   height: 50px;
   display: flex;
@@ -62,19 +81,36 @@ body {
   font-weight: bold;
 }
 </style>
+</head>
+
+<body>
 
 <div class="wrapper">
 
-  <!-- 左（時間） -->
+  <!-- =========================
+       左：時間列
+  ========================= -->
   <div class="time-column" id="time"></div>
 
-  <!-- 右（曜日） -->
+  <!-- =========================
+       右：曜日
+  ========================= -->
   <div class="scroll-area" id="days"></div>
 
 </div>
 
 <script>
-const times = ["8:50","10:30","12:50","16:10","17:50","19:30"];
+
+const times = [
+  "08:50",
+  "10:30",
+  "12:50",
+  "16:10",
+  "17:50",
+  "19:30"
+];
+
+const days = ["月","火","水","木","金","土"];
 
 const timetable = {
   "月": ["教職","","日本史","総合","",""],
@@ -85,7 +121,9 @@ const timetable = {
   "土": ["教育と社会","","","","",""]
 };
 
-/* ===== 時間列 ===== */
+/* =========================
+   左：時間列生成
+========================= */
 const timeDiv = document.getElementById("time");
 
 times.forEach((t, i) => {
@@ -96,6 +134,7 @@ times.forEach((t, i) => {
   // 昼休み差し込み
   if (i === 2) {
     div.innerText = "昼休み";
+    div.classList.add("lunch");
   } else {
     div.innerText = t;
   }
@@ -103,25 +142,28 @@ times.forEach((t, i) => {
   timeDiv.appendChild(div);
 });
 
-/* ===== 曜日列 ===== */
+/* =========================
+   右：曜日列生成
+========================= */
 const daysDiv = document.getElementById("days");
 
-for (const day in timetable) {
+for (const day of days) {
 
   const col = document.createElement("div");
   col.className = "day-column";
 
+  // タイトル
   const title = document.createElement("div");
   title.className = "day-title";
   title.innerText = day;
   col.appendChild(title);
 
+  // 中身
   timetable[day].forEach(text => {
 
     const div = document.createElement("div");
     div.className = "cell";
 
-    // 昼休み行だけ色
     if (text === "") {
       div.innerText = "";
     } else {
@@ -133,4 +175,8 @@ for (const day in timetable) {
 
   daysDiv.appendChild(col);
 }
+
 </script>
+
+</body>
+</html>
