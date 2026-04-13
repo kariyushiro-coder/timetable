@@ -123,13 +123,9 @@ periods.forEach((p, i) => {
   // 時間
   grid.appendChild(createCell(p.start, "cell time"));
 
-const lunch = createCell("12:50〜14:30", "cell lunch");
-grid.appendChild(lunch);
-
   // 昼休み
   if (i === 1) {
 
-  // ===== 昼休みブロック =====
 grid.appendChild(createCell("昼休み", "cell time"));
 
 days.forEach(day => {
