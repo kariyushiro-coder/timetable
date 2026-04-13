@@ -138,18 +138,17 @@ for (const day in timetable) {
   const col = document.createElement("div");
   col.className = "day-column";
 
-  // ① 今日の曜日を色付け
-  if (day === today) {
-    col.style.background = "#fff3cd";
-    col.style.border = "2px solid #ff9800";
-  }
-
   const title = document.createElement("div");
   title.className = "day-title";
   title.innerText = day;
+
+  // ★ここに移動！！
+  if (day === today) {
+    title.style.border = "3px solid #ff9800";
+  }
+
   col.appendChild(title);
 
-  // 今の時限（1回だけ取得）
   const current = getCurrentPeriod();
 
   timetable[day].forEach((sub, i) => {
@@ -157,11 +156,8 @@ for (const day in timetable) {
     div.className = "cell";
     div.innerText = sub;
 
-    // ② 今の授業だけ色付け
     if (day === today && i === current) {
-      div.style.background = "#ff5722";
-      div.style.color = "white";
-      div.style.fontWeight = "bold";
+      div.style.border = "3px solid #ff5722";
     }
 
     col.appendChild(div);
@@ -169,7 +165,6 @@ for (const day in timetable) {
 
   daysDiv.appendChild(col);
 }
-
 // Service Worker
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('service-worker.js');
