@@ -162,16 +162,25 @@ for (const day in timetable) {
   const current = getCurrentPeriod();
 
   timetable[day].forEach((sub, i) => {
-    const div = document.createElement("div");
-    div.className = "cell";
-    div.innerText = sub;
+  const div = document.createElement("div");
+  div.className = "cell";
+  div.innerText = sub;
 
-    if (day === today && i === current) {
-      div.style.border = "3px solid #ff5722";
-    }
+  if (day === today && i === current) {
+    div.style.border = "3px solid #ff5722";
+  }
 
-    col.appendChild(div);
-  });
+  col.appendChild(div);
+
+  // ★これ追加（3限のあと）
+  if (i === 2) {
+    const lunch = document.createElement("div");
+    lunch.className = "cell";
+    lunch.innerText = "昼休み";
+    lunch.style.background = "#fff9c4";
+    col.appendChild(lunch);
+  }
+});
 
   daysDiv.appendChild(col);
 }
