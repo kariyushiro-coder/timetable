@@ -131,16 +131,12 @@ periods.forEach((p, i) => {
   // 昼休み
   if (i === 1) {
 
-   // ===== 12:50 =====
-  grid.appendChild(createCell("12:50", "cell time"));
-  days.forEach(day => {
-    grid.appendChild(createCell("", "cell"));
-  });
+  // ===== 昼休みブロック =====
+grid.appendChild(createCell("昼休み", "cell time"));
 
-  // ===== 昼休み =====
-  grid.appendChild(createCell("昼休み", "cell time")); // ←ここ変更
-  const lunch = createCell("12:50〜14:30", "cell lunch");
-　grid.appendChild(lunch);
+days.forEach(day => {
+  grid.appendChild(createCell("12:50〜14:30", "cell lunch"));
+});
 
 }
 });
