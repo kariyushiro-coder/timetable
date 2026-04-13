@@ -2,7 +2,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>時間割</title>
+<title>時間割アプリ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="manifest" href="manifest.json">
 
 <style>
 body {
@@ -10,18 +12,22 @@ body {
   font-family: sans-serif;
 }
 
-/* 横並び全体 */
+header {
+  background: #2196f3;
+  color: white;
+  padding: 15px;
+  text-align: center;
+}
+
+/* 全体 */
 .wrapper {
   display: flex;
 }
 
-/* =========================
-左：時間列（固定）
-========================= */
+/* 左（時間）固定 */
 .time-column {
-  width: 80px;
-  min-width: 80px;
   background: #eee;
+  padding: 10px;
 }
 
 .time-cell {
@@ -30,29 +36,23 @@ body {
   align-items: center;
   justify-content: center;
   border: 1px solid #ddd;
-  background: #eee;
 }
 
-/* =========================
-右：スクロール領域
-========================= */
+/* 右（スクロール） */
 .scroll-area {
   overflow-x: auto;
   display: flex;
 }
 
-/* 各曜日列 */
 .day-column {
-  min-width: 120px;
+  min-width: 100px;
 }
 
-/* 曜日ヘッダ */
+/* 曜日ヘッダー */
 .day-title {
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  text-align: center;
   font-weight: bold;
+  padding: 10px;
   background: #f5f5f5;
   border: 1px solid #ddd;
 }
@@ -66,6 +66,23 @@ body {
   border: 1px solid #ddd;
 }
 
+/* =========================
+ハイライト追加
+========================= */
+
+/* 今日の曜日 */
+.today {
+  background: #ffe0b2;
+  font-weight: bold;
+}
+
+/* 今の授業 */
+.now {
+  background: #ffccbc;
+  font-weight: bold;
+  border: 2px solid #ff5722;
+}
+
 /* 昼休み */
 .lunch {
   background: #fff9c4;
@@ -76,81 +93,122 @@ body {
 
 <body>
 
+<header>時間割</header>
+
 <div class="wrapper">
 
-  <!-- 左：時間 -->
   <div class="time-column" id="time"></div>
-
-  <!-- 右：曜日 -->
   <div class="scroll-area" id="days"></div>
 
 </div>
 
 <script>
 
-const times = [
-  "08:50",
-  "10:30",
-  "12:50（昼休み）",
-  "16:10",
-  "17:50",
-  "19:30"
-];
+const times = ["8:30","9:30","10:30","11:30","12:30","13:30","14:30"];
 
 const days = ["月","火","水","木","金","土"];
 
 const timetable = {
-  "月": ["教職","","日本史","総合","",""],
-  "火": ["教育","世界史","外書","","","アジア史"],
-  "水": ["","地理","人文","","",""],
-  "木": ["特別","地誌","史学展開","","","ICT教育"],
-  "金": ["","","","","",""],
-  "土": ["教育と社会","","","","",""]
+  "月": ["数","英","理","社","体","音","自"],
+  "火": ["英","数","理","美","体","国","自"],
+  "水": ["理","社","数","英","体","技","自"],
+  "木": ["国","英","数","理","体","音","自"],
+  "金": ["数","理","英","社","体","美","自"],
+  "土": ["自","自","自","自","自","自","自"]
 };
 
 /* =====================
-左列
+時間列
 ===================== */
 const timeDiv = document.getElementById("time");
 
-times.forEach(t => {
+times.forEach((t, i) => {
+
   const div = document.createElement("div");
   div.className = "time-cell";
-  div.innerText = t;
+
+  if (i === 4) {
+    div.innerText = "昼休み";
+    div.classList.add("lunch");
+  } else {
+    div.innerText = t;
+  }
+
   timeDiv.appendChild(div);
 });
 
 /* =====================
-右側
+今日判定
+===================== */
+const todayIndex = new Date().getDay();
+const dayMap = ["日","月","火","水","木","金","土"];
+const today = dayMap[todayIndex];
+
+/* =====================
+今の時間判定
+===================== */
+function getCurrentIndex() {
+  const now = new Date();
+  const h = now.getHours();
+  const m = now.getMinutes();
+  const t = h * 60 + m;
+
+  const ranges = [
+    [8*60+30, 9*60+30],
+    [9*60+30, 10*60+30],
+    [10*60+30, 11*60+30],
+    [11*60+30, 12*60+30],
+    [12*60+30, 13*60+30],
+    [13*60+30, 14*60+30],
+  ];
+
+  for (let i = 0; i < ranges.length; i++) {
+    if (t >= ranges[i][0] && t < ranges[i][1]) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+const nowIndex = getCurrentIndex();
+
+/* =====================
+曜日列
 ===================== */
 const daysDiv = document.getElementById("days");
 
-for (const day of days) {
+days.forEach(day => {
 
   const col = document.createElement("div");
   col.className = "day-column";
 
+  // ヘッダー
   const title = document.createElement("div");
   title.className = "day-title";
+
+  if (day === today) {
+    title.classList.add("today");
+  }
+
   title.innerText = day;
   col.appendChild(title);
 
-  timetable[day].forEach(text => {
+  // セル
+  timetable[day].forEach((sub, i) => {
 
     const div = document.createElement("div");
     div.className = "cell";
 
-    if (text === "") {
-      div.innerText = "";
-    } else {
-      div.innerText = text;
+    if (i === nowIndex && day === today) {
+      div.classList.add("now");
     }
 
+    div.innerText = sub;
     col.appendChild(div);
   });
 
   daysDiv.appendChild(col);
-}
+});
 
 </script>
 
