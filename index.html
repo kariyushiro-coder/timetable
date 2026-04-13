@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>時間割（Excel型）</title>
+<title>時間割</title>
 
 <style>
 body {
@@ -10,13 +10,12 @@ body {
   font-family: sans-serif;
 }
 
-/* ===== 表全体 ===== */
 .grid {
   display: grid;
   grid-template-columns: 80px repeat(6, 120px);
 }
 
-/* セル共通 */
+/* 共通セル */
 .cell {
   border: 1px solid #ddd;
   height: 50px;
@@ -25,47 +24,41 @@ body {
   justify-content: center;
 }
 
-/* 左上空白 */
-.corner {
+/* 左列（時間） */
+.time {
   background: #eee;
   position: sticky;
-  top: 0;
   left: 0;
-  z-index: 3;
-}
-
-/* 曜日ヘッダー（上固定） */
-.header {
-  background: #f5f5f5;
-  font-weight: bold;
-
-  position: sticky;
-  top: 0;
   z-index: 2;
 }
 
-/* 時間列（左固定） */
-.time {
-  background: #eee;
+/* 曜日ヘッダー */
+.header {
+  background: #f5f5f5;
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+}
 
+/* 昼休み行 */
+.lunch-time {
+  background: #eee;
+  font-weight: bold;
   position: sticky;
   left: 0;
-  z-index: 1;
+  z-index: 2;
 }
 
-/* 今日ハイライト */
-.today {
-  background: #ffe0b2;
+.lunch {
+  background: #fff9c4;
   font-weight: bold;
+  grid-column: 2 / 8;
 }
 
-/* 今の時間 */
-.now {
-  background: #ffccbc;
-  font-weight: bold;
-}
+/* 今日・現在 */
+.today { background: #ffe0b2; }
+.now { background: #ffccbc; font-weight: bold; }
 </style>
-
 </head>
 
 <body>
@@ -76,90 +69,62 @@ body {
 
 const days = ["月","火","水","木","金","土"];
 
-const times = ["8:30","9:30","10:30","11:30","12:30","13:30"];
+const times = [
+  "8:30",
+  "10:30",
+  "12:50",
+  "13:30",
+  "16:10",
+  "17:50",
+  "19:30"
+];
 
 const timetable = {
-  "月": ["数","英","理","社","体","音"],
-  "火": ["英","数","理","美","体","国"],
-  "水": ["理","社","数","英","体","技"],
-  "木": ["国","英","数","理","体","音"],
-  "金": ["数","理","英","社","体","美"],
-  "土": ["自","自","自","自","自","自"]
+  "月": ["数","英","理","社","体","音","自"],
+  "火": ["英","数","理","美","体","国","自"],
+  "水": ["理","社","数","英","体","技","自"],
+  "木": ["国","英","数","理","体","音","自"],
+  "金": ["数","理","英","社","体","美","自"],
+  "土": ["自","自","自","自","自","自","自"]
 };
 
 const grid = document.getElementById("grid");
 
-/* ======================
-1行目（曜日ヘッダー）
-====================== */
+/* =====================
+ヘッダー
+===================== */
+grid.appendChild(make("cell time header",""));
 
-// 左上空白
-grid.appendChild(make("corner",""));
-
-// 曜日
 days.forEach(d => {
-  const cell = make("cell header", d);
-  grid.appendChild(cell);
+  grid.appendChild(make("cell header", d));
 });
 
-/* ======================
-時間 + 授業
-====================== */
+/* =====================
+本体
+===================== */
 
-const todayIndex = new Date().getDay();
-const dayMap = ["日","月","火","水","木","金","土"];
-const today = dayMap[todayIndex];
+for (let i = 0; i < times.length; i++) {
 
-function getNowIndex() {
-  const h = new Date().getHours();
-  const m = new Date().getMinutes();
-  const t = h*60+m;
+  // ★昼休み行を差し込む
+  if (i === 2) {
 
-  const range = [
-    [8*60+30, 9*60+30],
-    [9*60+30,10*60+30],
-    [10*60+30,11*60+30],
-    [11*60+30,12*60+30],
-    [12*60+30,13*60+30],
-    [13*60+30,14*60+30],
-  ];
+    grid.appendChild(make("cell lunch-time", "昼休み"));
 
-  for (let i=0;i<range.length;i++){
-    if(t>=range[i][0] && t<range[i][1]) return i;
+    const lunch = make("cell lunch", "12:50〜14:30");
+    grid.appendChild(lunch);
+
+    continue;
   }
-  return -1;
-}
-
-const nowIndex = getNowIndex();
-
-/* 行生成 */
-for (let i=0;i<times.length;i++){
 
   // 時間
-  const tcell = make("cell time", times[i]);
-  grid.appendChild(tcell);
+  grid.appendChild(make("cell time", times[i]));
 
-  // 各曜日
+  // 授業
   days.forEach(d => {
-
-    const val = timetable[d][i];
-
-    const cell = make("cell", val);
-
-    // 今日＋現在時刻ハイライト
-    if (d === today && i === nowIndex) {
-      cell.classList.add("now");
-    }
-
-    if (d === today) {
-      cell.classList.add("today");
-    }
-
-    grid.appendChild(cell);
+    grid.appendChild(make("cell", timetable[d][i]));
   });
 }
 
-/* 作成関数 */
 function make(cls, text){
   const div = document.createElement("div");
   div.className = cls;
