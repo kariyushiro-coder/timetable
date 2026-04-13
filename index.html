@@ -128,7 +128,7 @@ const timeDiv = document.getElementById("time");
 periods.forEach((p, i) => {
   const div = document.createElement("div");
   div.className = "time-cell";
-  div.innerText = p.start + "〜" + p.end;                           
+  div.innerText = p.start;                           
   timeDiv.appendChild(div);
 
   // ★3限のあとに昼休み
