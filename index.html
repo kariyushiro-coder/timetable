@@ -85,6 +85,7 @@ const days = ["月","火","水","木","金","土"];
 const periods = [
   { start: "08:50", end: "10:20" },
   { start: "10:30", end: "12:00" },
+  { start: "12:50", end: "14:20" },
   { start: "16:10", end: "17:40" },
   { start: "17:50", end: "19:20" },
   { start: "19:30", end: "21:00" }
@@ -98,7 +99,9 @@ const timetable = {
   "金": ["","","","","","",""],
   "土": ["教育と社会","","","","","",""]
 };
-
+const todayIndex = new Date().getDay();
+const dayMap = ["日","月","火","水","木","金","土"];
+const today = dayMap[todayIndex];
 const grid = document.getElementById("grid");
 
 /* ===== ヘッダー ===== */
@@ -136,7 +139,7 @@ periods.forEach((p, i) => {
 
   // ===== 昼休み =====
   grid.appendChild(createCell("昼休み", "cell time")); // ←ここ変更
-　const lunch = createCell("12:50〜14:30", "cell lunch");
+  const lunch = createCell("12:50〜14:30", "cell lunch");
 　grid.appendChild(lunch);
 
 }
