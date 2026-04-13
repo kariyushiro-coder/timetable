@@ -79,6 +79,10 @@ header {
 </div>
 
 <script>
+  const todayIndex = new Date().getDay(); // 0=日
+　const dayMap = ["日","月","火","水","木","金","土"];
+　const today = dayMap[todayIndex];
+  
   const periods = [
   { start: "08:30", end: "09:20" },
   { start: "09:30", end: "10:20" },
@@ -130,6 +134,10 @@ times.forEach(t => {
 const daysDiv = document.getElementById("days");
 
 for (const day in timetable) {
+  if (day === today) {
+  title.style.background = "#ff9800";
+  title.style.color = "white";
+}
   const col = document.createElement("div");
   col.className = "day-column";
 
