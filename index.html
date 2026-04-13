@@ -10,7 +10,6 @@
 body {
   margin: 0;
   font-family: sans-serif;
-  background: #f0f2f5;
 }
 
 header {
@@ -18,50 +17,49 @@ header {
   color: white;
   padding: 15px;
   text-align: center;
-  font-size: 20px;
 }
 
-/* 横スクロール */
-.container {
+/* 全体 */
+.wrapper {
   display: flex;
+}
+
+/* 左（時間）固定 */
+.time-column {
+  background: #eee;
+  padding: 10px;
+}
+
+.time-cell {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 右（スクロール） */
+.scroll-area {
   overflow-x: auto;
-  padding: 10px;
-  gap: 10px;
+  display: flex;
 }
 
-/* 列 */
-.column {
-  min-width: 120px;
+.day-column {
+  min-width: 100px;
 }
 
-/* 時間列 */
-.time {
-  background: #ddd;
-  border-radius: 10px;
-  padding: 10px;
-}
-
-/* 曜日 */
-.day {
-  background: white;
-  border-radius: 15px;
-  padding: 10px;
-  min-width: 180px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.title {
-  font-weight: bold;
+.day-title {
   text-align: center;
-  margin-bottom: 10px;
-  color: #2196f3;
+  font-weight: bold;
+  padding: 10px;
+  background: #f5f5f5;
 }
 
 .cell {
-  margin: 5px 0;
-  padding: 8px;
-  background: #f9f9f9;
-  border-radius: 8px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ddd;
 }
 </style>
 </head>
@@ -70,62 +68,57 @@ header {
 
 <header>時間割</header>
 
-<div class="container" id="content"></div>
+<div class="wrapper">
+
+  <!-- 時間（固定） -->
+  <div class="time-column" id="time"></div>
+
+  <!-- 曜日（スクロール） -->
+  <div class="scroll-area" id="days"></div>
+
+</div>
 
 <script>
-// 開始時間
-const times = [
-  "8:30","9:30","10:30","11:30","12:30","13:30","14:30"
-];
+const times = ["8:30","9:30","10:30","11:30","12:30","13:30","14:30"];
 
-// 時間割
 const timetable = {
-  "月": ["数学","英語","理科","社会","体育","音楽","自習"],
-  "火": ["英語","数学","理科","美術","体育","国語","自習"],
-  "水": ["理科","社会","数学","英語","体育","技術","自習"],
-  "木": ["国語","英語","数学","理科","体育","音楽","自習"],
-  "金": ["数学","理科","英語","社会","体育","美術","自習"],
-  "土": ["自習","自習","自習","自習","自習","自習","自習"]
+  "月": ["数","英","理","社","体","音","自"],
+  "火": ["英","数","理","美","体","国","自"],
+  "水": ["理","社","数","英","体","技","自"],
+  "木": ["国","英","数","理","体","音","自"],
+  "金": ["数","理","英","社","体","美","自"],
+  "土": ["自","自","自","自","自","自","自"]
 };
 
-const content = document.getElementById("content");
-
-// 時間列（固定）
-const timeCol = document.createElement("div");
-timeCol.className = "column time";
-
-const timeTitle = document.createElement("div");
-timeTitle.className = "title";
-timeTitle.innerText = "開始";
-timeCol.appendChild(timeTitle);
-
+// 時間列
+const timeDiv = document.getElementById("time");
 times.forEach(t => {
   const div = document.createElement("div");
-  div.className = "cell";
+  div.className = "time-cell";
   div.innerText = t;
-  timeCol.appendChild(div);
+  timeDiv.appendChild(div);
 });
 
-content.appendChild(timeCol);
+// 曜日列
+const daysDiv = document.getElementById("days");
 
-// 各曜日
 for (const day in timetable) {
   const col = document.createElement("div");
-  col.className = "column day";
+  col.className = "day-column";
 
   const title = document.createElement("div");
-  title.className = "title";
-  title.innerText = day + "曜日";
+  title.className = "day-title";
+  title.innerText = day;
   col.appendChild(title);
 
-  timetable[day].forEach(subject => {
+  timetable[day].forEach(sub => {
     const div = document.createElement("div");
     div.className = "cell";
-    div.innerText = subject;
+    div.innerText = sub;
     col.appendChild(div);
   });
 
-  content.appendChild(col);
+  daysDiv.appendChild(col);
 }
 
 // Service Worker
