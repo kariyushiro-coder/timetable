@@ -110,9 +110,6 @@ function getCurrentPeriod() {
   }
   return -1;
 }
-<!--
-const times = ["8:50","10:30","12:50","14:30","16:10","17:50","19:30"];
--->
   
 const timetable = {
   "月": ["教職","","","日本史","総合","",""],
@@ -156,6 +153,7 @@ for (const day in timetable) {
   // ★ここに移動！！
   if (day === today) {
     title.style.border = "3px solid #ff9800";
+    title.style.borderRadius = "8px";
   }
 
   col.appendChild(title);
@@ -169,6 +167,7 @@ for (const day in timetable) {
 
   if (day === today && i === current) {
     div.style.border = "3px solid #ff5722";
+    div.style.fontWeight = "bold"; 
   }
 
   col.appendChild(div);
@@ -179,6 +178,8 @@ for (const day in timetable) {
     lunch.className = "cell";
     lunch.innerText = "昼休み";
     lunch.style.background = "#fff9c4";
+    lunch.style.fontWeight = "bold"; 
+    lunch.style.border = "2px dashed #ff9800";
     col.appendChild(lunch);
   }
 });
