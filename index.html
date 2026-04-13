@@ -132,20 +132,8 @@ periods.forEach((p, i) => {
   // 昼休み（1行だけ）
 // 昼休み（1行だけ）
 if (i === 1) {
-
-  // 時間列（空）
-  grid.appendChild(createCell("", "cell time"));
-
-  // 昼休みラベル（左端）
-  grid.appendChild(createCell("昼休み", "cell time"));
-
-  // 月〜土（6列）
-  days.forEach(() => {
-    grid.appendChild(createCell("", "cell"));
-  });
-
-  // 右側に横断セル（結合風）
-  const lunch = createCell("12:50〜14:30", "cell lunch");
+  const lunch = createCell("昼休み　12:50〜14:30", "cell lunch");
+  lunch.style.gridColumn = "2 / 8";
   grid.appendChild(lunch);
 }
 
