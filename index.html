@@ -21,30 +21,40 @@ header {
   font-size: 20px;
 }
 
+/* 横スクロール */
 .container {
+  display: flex;
+  overflow-x: auto;
   padding: 10px;
+  gap: 10px;
 }
 
+/* 曜日カード */
 .day {
-  margin-bottom: 20px;
+  min-width: 250px;
+  background: white;
+  border-radius: 15px;
+  padding: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .day-title {
-  font-size: 18px;
   font-weight: bold;
-  margin: 10px 0;
+  margin-bottom: 10px;
+  text-align: center;
+  color: #2196f3;
 }
 
+/* 授業 */
 .card {
-  background: white;
+  background: #f9f9f9;
   margin: 5px 0;
-  padding: 12px;
+  padding: 10px;
   border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
 .period {
-  font-weight: bold;
+  font-size: 12px;
   color: #2196f3;
 }
 </style>
@@ -58,24 +68,23 @@ header {
 
 <script>
 const timetable = {
-  "月曜日": ["数学","英語","理科","社会","体育","音楽","自習"],
-  "火曜日": ["英語","数学","理科","美術","体育","国語","自習"],
-  "水曜日": ["理科","社会","数学","英語","体育","技術","自習"],
-  "木曜日": ["国語","英語","数学","理科","体育","音楽","自習"],
-  "金曜日": ["数学","理科","英語","社会","体育","美術","自習"],
-  "土曜日": ["自習","自習","自習","自習","自習","自習","自習"]
+  "月": ["数学","英語","理科","社会","体育","音楽","自習"],
+  "火": ["英語","数学","理科","美術","体育","国語","自習"],
+  "水": ["理科","社会","数学","英語","体育","技術","自習"],
+  "木": ["国語","英語","数学","理科","体育","音楽","自習"],
+  "金": ["数学","理科","英語","社会","体育","美術","自習"],
+  "土": ["自習","自習","自習","自習","自習","自習","自習"]
 };
 
 const content = document.getElementById("content");
 
-// 全曜日表示
 for (const day in timetable) {
   const dayDiv = document.createElement("div");
   dayDiv.className = "day";
 
   const title = document.createElement("div");
   title.className = "day-title";
-  title.innerText = day;
+  title.innerText = day + "曜日";
 
   dayDiv.appendChild(title);
 
