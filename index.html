@@ -34,12 +34,13 @@ header {
   padding: 5px;
 }
 
-/* 時間固定 */
+/* ★左の時間列（sticky強化版） */
 .time {
   position: sticky;
   left: 0;
   background: #eee;
-  z-index: 5;
+  z-index: 20;
+  min-width: 80px;
 }
 
 /* 曜日 */
@@ -84,10 +85,7 @@ const days = ["月","火","水","木","金","土"];
 const periods = [
   { start: "08:50" },
   { start: "10:30" },
-
-  // 👇昼休み（ここがポイント）
   { start: "昼休み", lunch: true },
-
   { start: "12:50" },
   { start: "16:10" },
   { start: "17:50" },
@@ -121,20 +119,23 @@ days.forEach(day => {
 /* ===== 本体 ===== */
 periods.forEach((p, i) => {
 
-  // 時間列（昼休みだけ特殊）
+  // ★時間列（sticky確実版）
   const timeCell = createCell(p.start, "cell time");
+  timeCell.style.position = "sticky";
+  timeCell.style.left = "0";
+  timeCell.style.zIndex = "20";
+  timeCell.style.background = "#eee";
   grid.appendChild(timeCell);
 
-  // 昼休み行
+  // ★昼休み
   if (p.lunch) {
-    const lunch = createCell("昼休み　12:50〜14:30", "cell lunch");
-    lunch.style.gridColumn = "2 / 8";
+    const lunch = createCell("12:50〜14:30", "cell lunch");
     grid.appendChild(lunch);
     return;
   }
 
   // 授業
-  days.forEach(day => {
+  days.forEach((day, idx) => {
     grid.appendChild(createCell(timetable[day][i] || "", "cell"));
   });
 });
