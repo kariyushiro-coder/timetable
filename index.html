@@ -4,64 +4,59 @@ body {
   font-family: sans-serif;
 }
 
-/* ★スクロール領域 */
+/* ★横スクロール */
 .container {
-  overflow: auto;
-  max-width: 100vw;
+  overflow-x: auto;
 }
 
-/* ★グリッド本体 */
-.grid {
-  display: grid;
-  grid-template-columns: 80px repeat(6, 120px);
-  min-width: max-content;
+/* ★テーブル化（これが一番安定） */
+.table {
+  display: table;
+  border-collapse: collapse;
+  min-width: 100%;
+}
+
+/* 行 */
+.row {
+  display: table-row;
 }
 
 /* セル */
 .cell {
+  display: table-cell;
   border: 1px solid #ddd;
-  min-height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  white-space: nowrap;
+  min-width: 120px;
+  height: 50px;
+  text-align: center;
+  vertical-align: middle;
 }
 
-/* ★時間列（固定） */
+/* ★左列固定 */
 .time {
   position: sticky;
   left: 0;
   background: #eee;
-  z-index: 30;
+  z-index: 10;
   min-width: 80px;
 }
 
-/* 曜日固定（上） */
-.day-title {
-  background: #f5f5f5;
-  font-weight: bold;
+/* ★上固定（曜日） */
+.header {
   position: sticky;
   top: 0;
-  z-index: 10;
+  background: #f5f5f5;
+  z-index: 5;
 }
 
 /* 昼休み */
 .lunch {
-  grid-column: 2 / 8;
   background: #fff9c4;
   font-weight: bold;
-  text-align: center;
-}
-
-/* 今日 */
-.today {
-  border: 3px solid #ff9800;
-  background: #ffe0b2;
 }
 </style>
 
 <div class="container">
-  <div class="grid" id="grid"></div>
+  <div class="table" id="grid"></div>
 </div>
 
 <script>
@@ -93,35 +88,47 @@ const today = dayMap[todayIndex];
 const grid = document.getElementById("grid");
 
 /* ===== ヘッダー ===== */
-grid.appendChild(createCell("", "cell time"));
+const headerRow = document.createElement("div");
+headerRow.className = "row";
 
-days.forEach(day => {
-  const cell = createCell(day, "cell day-title");
-  if (day === today) cell.classList.add("today");
-  grid.appendChild(cell);
+headerRow.appendChild(makeCell("", "cell time header"));
+
+days.forEach(d => {
+  const c = makeCell(d, "cell header");
+  if (d === today) c.style.background = "#ffe0b2";
+  headerRow.appendChild(c);
 });
+
+grid.appendChild(headerRow);
 
 /* ===== 本体 ===== */
 periods.forEach((p, i) => {
 
-  // ★時間列（完全固定）
-  const timeCell = createCell(p.start, "cell time");
-  grid.appendChild(timeCell);
+  const row = document.createElement("div");
+  row.className = "row";
 
-  // ★昼休み
+  // 左固定列
+  row.appendChild(makeCell(p.start, "cell time"));
+
+  // 昼休み
   if (p.lunch) {
-    const lunch = createCell("12:50〜14:30", "cell lunch");
-    grid.appendChild(lunch);
+    const lunch = makeCell("12:50〜14:30", "cell lunch");
+    lunch.style.textAlign = "center";
+    lunch.colSpan = 6;
+    row.appendChild(lunch);
+    grid.appendChild(row);
     return;
   }
 
   // 授業
   days.forEach(day => {
-    grid.appendChild(createCell(timetable[day][i] || "", "cell"));
+    row.appendChild(makeCell(timetable[day][i] || "", "cell"));
   });
+
+  grid.appendChild(row);
 });
 
-function createCell(text, className) {
+function makeCell(text, className) {
   const div = document.createElement("div");
   div.className = className;
   div.innerText = text;
