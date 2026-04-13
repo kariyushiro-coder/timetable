@@ -123,11 +123,21 @@ const timetable = {
 
 // 時間列
 const timeDiv = document.getElementById("time");
-times.forEach(t => {
+times.forEach((t, i) => {
+
   const div = document.createElement("div");
   div.className = "time-cell";
   div.innerText = t;
   timeDiv.appendChild(div);
+
+  // ★3限のあとに昼休み
+  if (i === 2) {
+    const lunch = document.createElement("div");
+    lunch.className = "time-cell";
+    lunch.innerText = "昼休み";
+    lunch.style.background = "#ffe082";
+    timeDiv.appendChild(lunch);
+  }
 });
 
 // 曜日列
