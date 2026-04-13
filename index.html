@@ -2,8 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>時間割アプリ</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>時間割</title>
 
 <style>
 body {
@@ -11,20 +10,20 @@ body {
   font-family: sans-serif;
 }
 
-/* 全体横並び */
+/* 横並び全体 */
 .wrapper {
   display: flex;
 }
 
 /* =========================
-   左：時間列（完全固定）
+左：時間列（固定）
 ========================= */
 .time-column {
   width: 80px;
   min-width: 80px;
+  background: #eee;
 }
 
-/* 1セル（左列） */
 .time-cell {
   height: 50px;
   display: flex;
@@ -32,14 +31,10 @@ body {
   justify-content: center;
   border: 1px solid #ddd;
   background: #eee;
-
-  position: sticky;
-  left: 0;
-  z-index: 10;
 }
 
 /* =========================
-   右：スクロール領域
+右：スクロール領域
 ========================= */
 .scroll-area {
   overflow-x: auto;
@@ -51,7 +46,7 @@ body {
   min-width: 120px;
 }
 
-/* 曜日タイトル */
+/* 曜日ヘッダ */
 .day-title {
   height: 50px;
   display: flex;
@@ -60,13 +55,9 @@ body {
   font-weight: bold;
   background: #f5f5f5;
   border: 1px solid #ddd;
-
-  position: sticky;
-  top: 0;
-  z-index: 5;
 }
 
-/* 通常セル */
+/* セル */
 .cell {
   height: 50px;
   display: flex;
@@ -87,14 +78,10 @@ body {
 
 <div class="wrapper">
 
-  <!-- =========================
-       左：時間列
-  ========================= -->
+  <!-- 左：時間 -->
   <div class="time-column" id="time"></div>
 
-  <!-- =========================
-       右：曜日
-  ========================= -->
+  <!-- 右：曜日 -->
   <div class="scroll-area" id="days"></div>
 
 </div>
@@ -104,7 +91,7 @@ body {
 const times = [
   "08:50",
   "10:30",
-  "12:50",
+  "12:50（昼休み）",
   "16:10",
   "17:50",
   "19:30"
@@ -121,30 +108,21 @@ const timetable = {
   "土": ["教育と社会","","","","",""]
 };
 
-/* =========================
-   左：時間列生成
-========================= */
+/* =====================
+左列
+===================== */
 const timeDiv = document.getElementById("time");
 
-times.forEach((t, i) => {
-
+times.forEach(t => {
   const div = document.createElement("div");
   div.className = "time-cell";
-
-  // 昼休み差し込み
-  if (i === 2) {
-    div.innerText = "昼休み";
-    div.classList.add("lunch");
-  } else {
-    div.innerText = t;
-  }
-
+  div.innerText = t;
   timeDiv.appendChild(div);
 });
 
-/* =========================
-   右：曜日列生成
-========================= */
+/* =====================
+右側
+===================== */
 const daysDiv = document.getElementById("days");
 
 for (const day of days) {
@@ -152,13 +130,11 @@ for (const day of days) {
   const col = document.createElement("div");
   col.className = "day-column";
 
-  // タイトル
   const title = document.createElement("div");
   title.className = "day-title";
   title.innerText = day;
   col.appendChild(title);
 
-  // 中身
   timetable[day].forEach(text => {
 
     const div = document.createElement("div");
