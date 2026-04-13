@@ -104,7 +104,13 @@ const grid = document.getElementById("grid");
 grid.appendChild(createCell("", "cell time"));
 
 days.forEach(day => {
-  grid.appendChild(createCell(day, "cell day-title"));
+  const cell = createCell(day, "cell day-title");
+
+  if (day === today) {
+    cell.classList.add("today");
+  }
+
+  grid.appendChild(cell);
 });
 
 /* ===== 本体 ===== */
