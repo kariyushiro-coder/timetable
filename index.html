@@ -11,18 +11,19 @@ body {
   font-family: sans-serif;
 }
 
-/* ★横スクロール */
+/* 横スクロール */
 .wrap {
   overflow-x: auto;
 }
 
-/* ★表 */
+/* グリッド */
 .grid {
   display: grid;
   grid-template-columns: 80px repeat(6, 120px);
+  min-width: max-content;
 }
 
-/* セル */
+/* 基本セル */
 .cell {
   border: 1px solid #ddd;
   height: 50px;
@@ -31,21 +32,21 @@ body {
   justify-content: center;
 }
 
-/* ★左列固定 */
-.time {
-  background: #eee;
+/* ★左列固定（最重要） */
+.fixed-left {
   position: sticky;
   left: 0;
-  z-index: 5;
+  background: #eee;
+  z-index: 10;
 }
 
-/* ★曜日固定 */
+/* 曜日ヘッダー */
 .header {
-  background: #f5f5f5;
-  font-weight: bold;
   position: sticky;
   top: 0;
-  z-index: 3;
+  background: #f5f5f5;
+  font-weight: bold;
+  z-index: 5;
 }
 
 /* 今日 */
@@ -54,23 +55,8 @@ body {
   font-weight: bold;
 }
 
-/* 今の授業 */
-.now {
-  background: #ffccbc;
-  font-weight: bold;
-}
-
 /* 昼休み */
-.lunch-left {
-  background: #eee;
-  font-weight: bold;
-  position: sticky;
-  left: 0;
-  z-index: 5;
-}
-
-.lunch {
-  grid-column: 2 / 8;
+.lunch-row {
   background: #fff9c4;
   font-weight: bold;
 }
@@ -114,8 +100,11 @@ const today = dayMap[todayIndex];
 /* =====================
 ヘッダー
 ===================== */
-grid.appendChild(make("cell time header",""));
 
+// 左上
+grid.appendChild(make("cell fixed-left header", ""));
+
+// 曜日
 days.forEach(d => {
   const c = make("cell header", d);
   if (d === today) c.classList.add("today");
@@ -123,35 +112,25 @@ days.forEach(d => {
 });
 
 /* =====================
-行生成
+本体
 ===================== */
 
 for (let i = 0; i < times.length; i++) {
 
-  // ★昼休み行
-  if (i === 2) {
+  // ★左列（絶対固定）
+  const timeCell = make("cell fixed-left", times[i]);
+  grid.appendChild(timeCell);
 
-    grid.appendChild(make("cell lunch-left", "昼休み"));
-
-    const lunch = make("cell lunch", "12:50〜14:30");
-    grid.appendChild(lunch);
-
-    continue;
-  }
-
-  // 時間
-  grid.appendChild(make("cell time", times[i]));
-
-  // 授業
+  // ★授業列
   days.forEach(d => {
-    const c = make("cell", timetable[d][i]);
-
+    const c = make("cell", timetable[d][i] || "");
     if (d === today) c.classList.add("today");
-
     grid.appendChild(c);
   });
+
 }
 
+/* 作成 */
 function make(cls, text){
   const div = document.createElement("div");
   div.className = cls;
