@@ -109,7 +109,9 @@ days.forEach(day => {
 periods.forEach((p, i) => {
 
   // 時間
+  if (i !== 2) {
   grid.appendChild(createCell(p.start, "cell time"));
+}
 
   // 授業
   days.forEach(day => {
@@ -117,7 +119,7 @@ periods.forEach((p, i) => {
   });
 
   // 昼休み
-  if (i === 2) {
+  if (i === 1) {
 
   // ===== 12:50（上）=====
   grid.appendChild(createCell("12:50", "cell time"));
