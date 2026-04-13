@@ -79,6 +79,33 @@ header {
 </div>
 
 <script>
+  const periods = [
+  { start: "08:30", end: "09:20" },
+  { start: "09:30", end: "10:20" },
+  { start: "10:30", end: "11:20" },
+  { start: "11:30", end: "12:20" },
+  { start: "12:30", end: "13:20" },
+  { start: "13:30", end: "14:20" },
+  { start: "14:30", end: "15:20" }
+];
+
+function getCurrentPeriod() {
+  const now = new Date();
+  const current = now.getHours() * 60 + now.getMinutes();
+
+  for (let i = 0; i < periods.length; i++) {
+    const [sh, sm] = periods[i].start.split(":").map(Number);
+    const [eh, em] = periods[i].end.split(":").map(Number);
+
+    const start = sh * 60 + sm;
+    const end = eh * 60 + em;
+
+    if (current >= start && current <= end) {
+      return i;
+    }
+  }
+  return -1;
+}
 const times = ["8:30","9:30","10:30","11:30","12:30","13:30","14:30"];
 
 const timetable = {
