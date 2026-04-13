@@ -128,9 +128,9 @@ periods.forEach((p, i) => {
   });
 
   // ===== 昼休み =====
-  grid.appendChild(createCell("", "cell time"));
-  const lunch = createCell("昼休み", "cell lunch");
-  grid.appendChild(lunch);
+  grid.appendChild(createCell("昼休み", "cell time")); // ←ここ変更
+　const lunch = createCell("12:50〜14:30", "cell lunch");
+　grid.appendChild(lunch);
 
 }
 });
