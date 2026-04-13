@@ -131,14 +131,10 @@ periods.forEach((p, i) => {
 
   // 昼休み（1行だけ）
 if (i === 1) {
-
   const lunch = createCell("昼休み　12:50〜14:30", "cell lunch");
-
   lunch.style.gridColumn = "2 / 8";
-
   grid.appendChild(lunch);
-
-  return; // ←これに変更
+  return;
 }
 });
 function createCell(text, className) {
