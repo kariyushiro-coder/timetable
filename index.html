@@ -132,11 +132,11 @@ periods.forEach((p, i) => {
   // 昼休み（1行だけ）
   if (i === 1) {
 
-  // 左の時間列（空セル）
-  grid.appendChild(createCell("", "cell time"));
+  // 左側（時間列）
+  grid.appendChild(createCell("昼休み", "cell time"));
 
-  // 昼休み（6列まとめ）
-  const lunch = createCell("昼休み　12:50〜14:30", "cell lunch");
+  // 月〜土まとめセル
+  const lunch = createCell("12:50〜14:30", "cell lunch");
   grid.appendChild(lunch);
 }
 
