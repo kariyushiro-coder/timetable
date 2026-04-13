@@ -138,7 +138,7 @@ for (const day in timetable) {
   const col = document.createElement("div");
   col.className = "day-column";
 
-  // 今日の曜日チェック（ここでOK）
+  // ① 今日の曜日を色付け
   if (day === today) {
     col.style.background = "#fff3cd";
     col.style.border = "2px solid #ff9800";
@@ -149,16 +149,19 @@ for (const day in timetable) {
   title.innerText = day;
   col.appendChild(title);
 
+  // 今の時限（1回だけ取得）
+  const current = getCurrentPeriod();
+
   timetable[day].forEach((sub, i) => {
     const div = document.createElement("div");
     div.className = "cell";
     div.innerText = sub;
 
-    // 今の授業（これ入れるなら）
-    const current = getCurrentPeriod();
+    // ② 今の授業だけ色付け
     if (day === today && i === current) {
       div.style.background = "#ff5722";
       div.style.color = "white";
+      div.style.fontWeight = "bold";
     }
 
     col.appendChild(div);
