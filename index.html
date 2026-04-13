@@ -123,18 +123,18 @@ periods.forEach((p, i) => {
   // 時間
   grid.appendChild(createCell(p.start, "cell time"));
 
-  // 昼休み
+  // 授業
+  days.forEach(day => {
+    grid.appendChild(createCell(timetable[day][i], "cell"));
+  });
+
+  // 昼休み（1行だけ）
   if (i === 1) {
+    const lunch = createCell("昼休み　12:50〜14:30", "cell lunch");
+    grid.appendChild(lunch);
+  }
 
-grid.appendChild(createCell("昼休み", "cell time"));
-
-days.forEach(day => {
-  grid.appendChild(createCell("12:50〜14:30", "cell lunch"));
 });
-
-}
-});
-
 function createCell(text, className) {
   const div = document.createElement("div");
   div.className = className;
