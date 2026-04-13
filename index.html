@@ -15,14 +15,14 @@ body {
   display: flex;
 }
 
-/* ★左（固定） */
-.time-column {
+/* 左固定 */
+.left {
+  width: 80px;
   flex-shrink: 0;
   background: #eee;
 }
 
-.time-cell {
-  width: 80px;
+.left div {
   height: 50px;
   display: flex;
   align-items: center;
@@ -30,26 +30,26 @@ body {
   border: 1px solid #ddd;
 }
 
-/* ★右（スクロール） */
-.scroll-area {
+/* 右スクロール */
+.right {
   overflow-x: auto;
 }
 
-/* 列 */
-.day-row {
+/* 1行 */
+.row {
   display: flex;
 }
 
-/* 曜日ヘッダー */
-.day-title {
+/* 曜日 */
+.day {
   width: 120px;
   height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
-  background: #f5f5f5;
   border: 1px solid #ddd;
+  background: #f5f5f5;
+  font-weight: bold;
 }
 
 /* セル */
@@ -62,34 +62,29 @@ body {
   border: 1px solid #ddd;
 }
 
-/* 今日 */
-.today {
-  background: #ffe0b2;
-  font-weight: bold;
-}
-
-/* 昼休み行 */
+/* 昼休み */
 .lunch-left {
   width: 80px;
   height: 50px;
-  background: #eee;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: #eee;
   border: 1px solid #ddd;
 }
 
-.lunch {
+.lunch-right {
   width: 720px;
   height: 50px;
-  background: #fff9c4;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: #fff9c4;
   border: 1px solid #ddd;
   font-weight: bold;
 }
 </style>
+
 </head>
 
 <body>
@@ -97,10 +92,10 @@ body {
 <div class="wrapper">
 
   <!-- 左固定 -->
-  <div class="time-column" id="time"></div>
+  <div class="left" id="time"></div>
 
   <!-- 右スクロール -->
-  <div class="scroll-area" id="days"></div>
+  <div class="right" id="table"></div>
 
 </div>
 
@@ -119,55 +114,49 @@ const times = [
 const days = ["月","火","水","木","金","土"];
 
 const timetable = {
-  "月": ["教職","","日本史","", "総合","",""],
-  "火": ["教育","世界史","外書","", "アジア史","",""],
+  "月": ["教職","","日本史","総合","","",""],
+  "火": ["教育","世界史","外書","","アジア史","",""],
   "水": ["","地理","人文","","","",""],
   "木": ["特別","地誌","史学展開","","日本時代","",""],
   "金": ["","","","","",""],
   "土": ["教育","","","","",""]
 };
 
-const todayIndex = new Date().getDay();
-const dayMap = ["日","月","火","水","木","金","土"];
-const today = dayMap[todayIndex];
-
 const timeDiv = document.getElementById("time");
-const daysDiv = document.getElementById("days");
+const tableDiv = document.getElementById("table");
 
-/* ===== 左列 ===== */
+/* 左列 */
 times.forEach(t => {
   const div = document.createElement("div");
-  div.className = "time-cell";
   div.innerText = t;
   timeDiv.appendChild(div);
 });
 
-/* ===== 右側 ===== */
+/* 右側 */
 for (let i = 0; i < times.length; i++) {
 
   // 昼休み行
   if (i === 3) {
-
     const row = document.createElement("div");
-    row.style.display = "flex";
+    row.className = "row";
 
     const left = document.createElement("div");
     left.className = "lunch-left";
     left.innerText = "昼休み";
 
     const right = document.createElement("div");
-    right.className = "lunch";
+    right.className = "lunch-right";
     right.innerText = "12:50〜14:30";
 
     row.appendChild(left);
     row.appendChild(right);
 
-    daysDiv.appendChild(row);
+    tableDiv.appendChild(row);
     continue;
   }
 
   const row = document.createElement("div");
-  row.style.display = "flex";
+  row.className = "row";
 
   days.forEach(d => {
     const div = document.createElement("div");
@@ -176,7 +165,7 @@ for (let i = 0; i < times.length; i++) {
     row.appendChild(div);
   });
 
-  daysDiv.appendChild(row);
+  tableDiv.appendChild(row);
 }
 
 </script>
