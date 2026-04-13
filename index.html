@@ -74,3 +74,60 @@ header {
 <div class="container">
   <div class="grid" id="grid"></div>
 </div>
+
+<script>
+const days = ["月","火","水","木","金","土"];
+
+const periods = [
+  { start: "08:50", end: "10:20" },
+  { start: "10:30", end: "12:00" },
+  { start: "12:50", end: "14:20" },
+  { start: "14:30", end: "16:00" },
+  { start: "16:10", end: "17:40" },
+  { start: "17:50", end: "19:20" },
+  { start: "19:30", end: "21:00" }
+];
+
+const timetable = {
+  "月": ["教職","","","日本史","総合","",""],
+  "火": ["教育","世界史","外書","","","アジア史",""],
+  "水": ["","地理","人文","","","",""],
+  "木": ["特別","地誌","史学展開","","","日本時代","ICT教育"],
+  "金": ["","","","","","",""],
+  "土": ["教育と社会","","","","","",""]
+};
+
+const grid = document.getElementById("grid");
+
+/* ===== ヘッダー ===== */
+grid.appendChild(createCell("", "cell time"));
+
+days.forEach(day => {
+  grid.appendChild(createCell(day, "cell day-title"));
+});
+
+/* ===== 本体 ===== */
+periods.forEach((p, i) => {
+
+  // 時間
+  grid.appendChild(createCell(p.start, "cell time"));
+
+  // 授業
+  days.forEach(day => {
+    grid.appendChild(createCell(timetable[day][i], "cell"));
+  });
+
+  // 昼休み
+  if (i === 2) {
+    const lunch = createCell("昼休み", "cell lunch");
+    grid.appendChild(lunch);
+  }
+});
+
+function createCell(text, className) {
+  const div = document.createElement("div");
+  div.className = className;
+  div.innerText = text;
+  return div;
+}
+</script>
