@@ -120,12 +120,22 @@ periods.forEach((p, i) => {
   // 昼休み
   if (i === 2) {
 
-  // 左の時間列（空）
-  grid.appendChild(createCell("", "cell time"));
+  // ===== 12:50（上）=====
+  grid.appendChild(createCell("12:50", "cell time"));
+  days.forEach(day => {
+    grid.appendChild(createCell("", "cell"));
+  });
 
-  // 曜日側（結合セル）
-  const lunch = createCell("12:50〜14:30", "cell lunch");
+  // ===== 昼休み =====
+  grid.appendChild(createCell("", "cell time")); // 左は空
+  const lunch = createCell("昼休み", "cell lunch");
   grid.appendChild(lunch);
+
+  // ===== 14:30（下）=====
+  grid.appendChild(createCell("14:30", "cell time"));
+  days.forEach(day => {
+    grid.appendChild(createCell("", "cell"));
+  });
 }
 });
 
