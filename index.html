@@ -54,7 +54,7 @@ header {
 
 /* 昼休み */
 .lunch {
-  grid-column: 1 / -1;
+  grid-column: 2 / -1;
   background: #fff9c4;
   font-weight: bold;
 }
@@ -119,9 +119,14 @@ periods.forEach((p, i) => {
 
   // 昼休み
   if (i === 2) {
-    const lunch = createCell("昼休み", "cell lunch");
-    grid.appendChild(lunch);
-  }
+
+  // 左の時間列（空）
+  grid.appendChild(createCell("", "cell time"));
+
+  // 曜日側（結合セル）
+  const lunch = createCell("12:50〜14:30", "cell lunch");
+  grid.appendChild(lunch);
+}
 });
 
 function createCell(text, className) {
