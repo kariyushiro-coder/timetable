@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <title>時間割</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
 body {
@@ -11,19 +10,16 @@ body {
   font-family: sans-serif;
 }
 
-/* 横スクロール */
 .wrap {
   overflow-x: auto;
 }
 
-/* グリッド */
 .grid {
   display: grid;
   grid-template-columns: 80px repeat(6, 120px);
-  min-width: max-content;
 }
 
-/* 基本セル */
+/* セル */
 .cell {
   border: 1px solid #ddd;
   height: 50px;
@@ -32,7 +28,7 @@ body {
   justify-content: center;
 }
 
-/* ★左列固定（最重要） */
+/* 左列固定 */
 .fixed-left {
   position: sticky;
   left: 0;
@@ -40,12 +36,12 @@ body {
   z-index: 10;
 }
 
-/* 曜日ヘッダー */
+/* 曜日 */
 .header {
-  position: sticky;
-  top: 0;
   background: #f5f5f5;
   font-weight: bold;
+  position: sticky;
+  top: 0;
   z-index: 5;
 }
 
@@ -56,7 +52,8 @@ body {
 }
 
 /* 昼休み */
-.lunch-row {
+.lunch {
+  grid-column: 2 / 8;
   background: #fff9c4;
   font-weight: bold;
 }
@@ -73,22 +70,23 @@ body {
 
 const days = ["月","火","水","木","金","土"];
 
-const times = [
-  "8:30",
-  "10:30",
-  "12:50",
-  "16:10",
-  "17:50",
-  "19:30"
+const rows = [
+  { time: "8:30" },
+  { time: "10:30" },
+  { lunch: true },
+  { time: "12:50" },
+  { time: "16:10" },
+  { time: "17:50" },
+  { time: "19:30" }
 ];
 
 const timetable = {
-  "月": ["教職","","日本史","総合","",""],
-  "火": ["教育","世界史","外書","","アジア史",""],
-  "水": ["","地理","人文","","",""],
-  "木": ["特別","地誌","史学展開","","日本時代","ICT"],
-  "金": ["","","","","",""],
-  "土": ["教育","","","","",""]
+  "月": ["教職","","日本史","総合","","",""],
+  "火": ["教育","世界史","外書","","アジア史","",""],
+  "水": ["","地理","人文","","","",""],
+  "木": ["特別","地誌","史学展開","","日本時代","",""],
+  "金": ["","","","","","",""],
+  "土": ["教育","","","","","",""]
 };
 
 const grid = document.getElementById("grid");
@@ -97,40 +95,43 @@ const todayIndex = new Date().getDay();
 const dayMap = ["日","月","火","水","木","金","土"];
 const today = dayMap[todayIndex];
 
-/* =====================
-ヘッダー
-===================== */
+/* ===== ヘッダー ===== */
+grid.appendChild(make("cell fixed-left header",""));
 
-// 左上
-grid.appendChild(make("cell fixed-left header", ""));
-
-// 曜日
 days.forEach(d => {
   const c = make("cell header", d);
   if (d === today) c.classList.add("today");
   grid.appendChild(c);
 });
 
-/* =====================
-本体
-===================== */
+/* ===== 本体 ===== */
+let dataIndex = 0;
 
-for (let i = 0; i < times.length; i++) {
+for (let i = 0; i < rows.length; i++) {
 
-  // ★左列（絶対固定）
-  const timeCell = make("cell fixed-left", times[i]);
-  grid.appendChild(timeCell);
+  /* 左列 */
+  const left = make("cell fixed-left", rows[i].time || "昼休み");
+  grid.appendChild(left);
 
-  // ★授業列
+  /* 昼休み行 */
+  if (rows[i].lunch) {
+
+    const lunch = make("cell lunch", "12:50〜14:30");
+    grid.appendChild(lunch);
+
+    continue;
+  }
+
+  /* 授業行 */
   days.forEach(d => {
-    const c = make("cell", timetable[d][i] || "");
+    const c = make("cell", timetable[d][dataIndex] || "");
     if (d === today) c.classList.add("today");
     grid.appendChild(c);
   });
 
+  dataIndex++;
 }
 
-/* 作成 */
 function make(cls, text){
   const div = document.createElement("div");
   div.className = cls;
