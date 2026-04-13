@@ -4,53 +4,37 @@ body {
   font-family: sans-serif;
 }
 
-/* 全体 */
-.wrapper {
-  display: flex;
+/* 横スクロール全体 */
+.container {
+  overflow-x: auto;
 }
 
-/* 左（時間）固定 */
-.time-column {
+/* 1行（時間＋曜日6列） */
+.row {
+  display: flex;
+  width: max-content;
+}
+
+/* 左の時間列（固定） */
+.time {
+  width: 80px;
+  min-width: 80px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ddd;
   background: #eee;
+
   position: sticky;
   left: 0;
   z-index: 10;
 }
 
-.time-cell {
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #ddd;
-  min-width: 80px;
-}
-
-/* 右（横スクロール） */
-.scroll-area {
-  overflow-x: auto;
-  display: flex;
-}
-
-/* 各曜日列 */
-.day-column {
-  min-width: 120px;
-}
-
-/* 曜日ヘッダー */
-.day-title {
-  text-align: center;
-  font-weight: bold;
-  background: #f5f5f5;
-  border: 1px solid #ddd;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* セル */
+/* 曜日セル */
 .cell {
+  width: 120px;
+  min-width: 120px;
   height: 50px;
   border: 1px solid #ddd;
   display: flex;
@@ -58,30 +42,32 @@ body {
   justify-content: center;
 }
 
-/* 今日ハイライト */
-.today {
-  background: #ffe0b2;
-  border: 2px solid #ff9800;
+/* ヘッダー */
+.header {
+  background: #f5f5f5;
+  font-weight: bold;
 }
 
 /* 昼休み */
 .lunch {
+  width: calc(120px * 6);
+  min-width: calc(120px * 6);
   background: #fff9c4;
   font-weight: bold;
 }
+
+/* 今日 */
+.today {
+  background: #ffe0b2;
+  border: 2px solid #ff9800;
+}
 </style>
 
-<div class="wrapper">
-
-  <!-- 左：時間 -->
-  <div class="time-column" id="time"></div>
-
-  <!-- 右：曜日 -->
-  <div class="scroll-area" id="days"></div>
-
-</div>
+<div class="container" id="grid"></div>
 
 <script>
+const days = ["月","火","水","木","金","土"];
+
 const times = [
   "08:50",
   "10:30",
@@ -100,35 +86,65 @@ const timetable = {
   "土": ["教育と社会","","","","",""]
 };
 
-/* 時間列 */
-const timeDiv = document.getElementById("time");
-times.forEach(t => {
-  const div = document.createElement("div");
-  div.className = "time-cell";
-  div.innerText = t;
-  timeDiv.appendChild(div);
+const grid = document.getElementById("grid");
+
+/* ===== ヘッダー ===== */
+let header = document.createElement("div");
+header.className = "row";
+
+let empty = document.createElement("div");
+empty.className = "time header";
+empty.innerText = "";
+header.appendChild(empty);
+
+days.forEach(d => {
+  let cell = document.createElement("div");
+  cell.className = "cell header";
+  cell.innerText = d;
+  header.appendChild(cell);
 });
 
-/* 曜日列 */
-const daysDiv = document.getElementById("days");
+grid.appendChild(header);
 
-for (const day in timetable) {
+/* ===== 本体 ===== */
+times.forEach((t, i) => {
 
-  const col = document.createElement("div");
-  col.className = "day-column";
+  // 昼休み行
+  if (i === 2) {
+    let row = document.createElement("div");
+    row.className = "row";
 
-  const title = document.createElement("div");
-  title.className = "day-title";
-  title.innerText = day;
-  col.appendChild(title);
+    let time = document.createElement("div");
+    time.className = "time";
+    time.innerText = "昼休み";
+    row.appendChild(time);
 
-  timetable[day].forEach(text => {
-    const div = document.createElement("div");
-    div.className = "cell";
-    div.innerText = text;
-    col.appendChild(div);
+    let lunch = document.createElement("div");
+    lunch.className = "lunch cell";
+    lunch.innerText = "12:50〜14:30";
+    row.appendChild(lunch);
+
+    grid.appendChild(row);
+    return;
+  }
+
+  let row = document.createElement("div");
+  row.className = "row";
+
+  // 時間
+  let time = document.createElement("div");
+  time.className = "time";
+  time.innerText = t;
+  row.appendChild(time);
+
+  // 授業
+  days.forEach(d => {
+    let cell = document.createElement("div");
+    cell.className = "cell";
+    cell.innerText = timetable[d][i > 2 ? i - 1 : i];
+    row.appendChild(cell);
   });
 
-  daysDiv.appendChild(col);
-}
+  grid.appendChild(row);
+});
 </script>
