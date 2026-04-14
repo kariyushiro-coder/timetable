@@ -86,6 +86,27 @@ th, td {
 .lunch-merge {
   background: #ffffff;
 }
+  /* ===== スマホ最適化 ===== */
+@media screen and (max-width: 600px) {
+
+  th, td {
+    width: 90px;       /* ← 120 → 90 に縮小 */
+    font-size: 12px;   /* 文字少し小さく */
+  }
+
+  .time-col,
+  .corner,
+  .lunch-time {
+    width: 60px;       /* 左列も縮小 */
+    min-width: 60px;
+    font-size: 12px;
+  }
+
+  .day-head {
+    font-size: 13px;
+  }
+
+}
 </style>
 </head>
 
