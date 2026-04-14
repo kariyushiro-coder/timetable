@@ -32,7 +32,6 @@ th, td {
   box-sizing: border-box;
 }
 
-/* 左上 */
 .corner {
   width: 80px;
   min-width: 80px;
@@ -42,7 +41,6 @@ th, td {
   z-index: 4;
 }
 
-/* 一番左の時間列 */
 .time-col {
   width: 80px;
   min-width: 80px;
@@ -52,7 +50,6 @@ th, td {
   z-index: 3;
 }
 
-/* 曜日ヘッダー */
 .day-head {
   background: #f5f5f5;
   font-weight: bold;
@@ -61,19 +58,16 @@ th, td {
   z-index: 2;
 }
 
-/* 今日の曜日 */
 .today {
   background: #ffe0b2;
 }
 
-/* 今の授業 */
 .now {
   background: #ffccbc;
   box-shadow: inset 0 0 0 2px #ff5722;
   font-weight: bold;
 }
 
-/* 昼休み左 */
 .lunch-time {
   width: 80px;
   min-width: 80px;
@@ -84,7 +78,6 @@ th, td {
   font-weight: bold;
 }
 
-/* 昼休み右 */
 .lunch-cell {
   background: #fff9c4;
   font-weight: bold;
@@ -101,7 +94,6 @@ th, td {
 <script>
 const days = ["月","火","水","木","金","土"];
 
-/* 表示する行 */
 const rows = [
   { type: "class", time: "8:30",  key: 0 },
   { type: "class", time: "10:30", key: 1 },
@@ -112,7 +104,6 @@ const rows = [
   { type: "class", time: "19:30", key: 5 }
 ];
 
-/* 授業データ */
 const timetable = {
   "月": ["教職", "", "日本史", "総合", "", ""],
   "火": ["教育", "世界史", "外書", "", "アジア史", ""],
@@ -122,18 +113,10 @@ const timetable = {
   "土": ["教育", "", "", "", "", ""]
 };
 
-/* 今日 */
 const todayIndex = new Date().getDay();
 const dayMap = ["日","月","火","水","木","金","土"];
 const today = dayMap[todayIndex];
-let todayCol = days.indexOf(today);
 
-/* 日曜なら月曜扱いで先頭から表示 */
-if (todayCol === -1) {
-  todayCol = 0;
-}
-
-/* 今の授業 */
 function getCurrentClassIndex() {
   const now = new Date();
   const minutes = now.getHours() * 60 + now.getMinutes();
@@ -158,7 +141,7 @@ function getCurrentClassIndex() {
 const nowIndex = getCurrentClassIndex();
 const table = document.getElementById("timetable");
 
-/* ヘッダー行 */
+/* ヘッダー */
 const headerTr = document.createElement("tr");
 
 const corner = document.createElement("th");
@@ -186,19 +169,23 @@ rows.forEach(row => {
     th.textContent = row.time;
     tr.appendChild(th);
 
-    /* 今日の曜日より前は空セル */
-    for (let i = 0; i < todayCol; i++) {
-      const empty = document.createElement("td");
-      empty.textContent = "";
-      tr.appendChild(empty);
-    }
+    // 月曜は空白
+    const mondayBlank = document.createElement("td");
+    mondayBlank.textContent = "";
+    tr.appendChild(mondayBlank);
 
-    /* 今日の曜日から右へ結合 */
-    const td = document.createElement("td");
-    td.className = "lunch-cell";
-    td.colSpan = 6 - todayCol;
-    td.textContent = row.label;
-    tr.appendChild(td);
+    // 火曜に 12:50〜14:30
+    const tueCell = document.createElement("td");
+    tueCell.className = "lunch-cell";
+    tueCell.textContent = row.label;
+    tr.appendChild(tueCell);
+
+    // 水〜土を結合
+    const merged = document.createElement("td");
+    merged.className = "lunch-cell";
+    merged.colSpan = 4;
+    merged.textContent = "";
+    tr.appendChild(merged);
 
     table.appendChild(tr);
     return;
@@ -213,13 +200,8 @@ rows.forEach(row => {
     const td = document.createElement("td");
     td.textContent = timetable[day][row.key] || "";
 
-    if (day === today) {
-      td.classList.add("today");
-    }
-
-    if (day === today && row.key === nowIndex) {
-      td.classList.add("now");
-    }
+    if (day === today) td.classList.add("today");
+    if (day === today && row.key === nowIndex) td.classList.add("now");
 
     tr.appendChild(td);
   });
