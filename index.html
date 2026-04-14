@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>時間割</title>
+<title>時間割アプリ</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
@@ -11,62 +11,50 @@ body {
   font-family: sans-serif;
 }
 
-.wrapper {
-  display: flex;
-}
-
-/* 左固定列 */
-.left {
-  width: 80px;
-  flex-shrink: 0;
-  background: #eee;
-}
-
-.left .cell {
-  width: 80px;
-  min-width: 80px;
-  background: #eee;
-}
-
-/* 右スクロール領域 */
-.right {
+.wrap {
   overflow-x: auto;
 }
 
-.row {
-  display: flex;
-  width: max-content;
+table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  min-width: 800px;
 }
 
-.cell {
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #ddd;
-  box-sizing: border-box;
-}
-
-/* 右側の通常セル */
-.right .cell {
+th, td {
+  border: 1px solid #ccc;
   width: 120px;
-  min-width: 120px;
+  height: 50px;
+  text-align: center;
+  vertical-align: middle;
+  padding: 0;
+  background: #fff;
+}
+
+/* 左端の時間列を固定 */
+.time-col {
+  width: 80px;
+  min-width: 80px;
+  background: #eee;
+  position: sticky;
+  left: 0;
+  z-index: 2;
+}
+
+/* 左上の空白セル */
+.corner {
+  width: 80px;
+  min-width: 80px;
+  background: #eee;
+  position: sticky;
+  left: 0;
+  z-index: 3;
 }
 
 /* 曜日ヘッダー */
-.header {
+.day-head {
   background: #f5f5f5;
   font-weight: bold;
-}
-
-/* 昼休み右側：月〜土を結合 */
-.lunch-right {
-  width: 720px;      /* 120px × 6列 */
-  min-width: 720px;
-  background: #fff9c4;
-  font-weight: bold;
-  justify-content: center;
-  text-align: center;
 }
 
 /* 今日の曜日 */
@@ -77,7 +65,21 @@ body {
 /* 今の授業 */
 .now {
   background: #ffccbc;
-  border: 2px solid #ff5722;
+  box-shadow: inset 0 0 0 2px #ff5722;
+  font-weight: bold;
+}
+
+/* 昼休み */
+.lunch-time {
+  background: #eee;
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  font-weight: bold;
+}
+
+.lunch-cell {
+  background: #fff9c4;
   font-weight: bold;
 }
 </style>
@@ -85,64 +87,47 @@ body {
 
 <body>
 
-<div class="wrapper">
-  <div class="left" id="left"></div>
-  <div class="right" id="right"></div>
+<div class="wrap">
+  <table id="timetable"></table>
 </div>
 
 <script>
 const days = ["月","火","水","木","金","土"];
 
-// 左列
-const leftRows = [
-  "",
-  "8:30",
-  "10:30",
-  "12:50",
-  "昼休み",
-  "16:10",
-  "17:50",
-  "19:30"
-];
-
-// 右側の行定義
-const rightRows = [
-  { type: "header" },
-  { type: "class", index: 0 },
-  { type: "class", index: 1 },
-  { type: "class", index: 2 },
-  { type: "lunch" },
-  { type: "class", index: 3 },
-  { type: "class", index: 4 },
-  { type: "class", index: 5 }
+const rows = [
+  { type: "class", time: "8:30",  key: 0 },
+  { type: "class", time: "10:30", key: 1 },
+  { type: "class", time: "12:50", key: 2 },
+  { type: "lunch", time: "昼休み", label: "12:50〜14:30" },
+  { type: "class", time: "16:10", key: 3 },
+  { type: "class", time: "17:50", key: 4 },
+  { type: "class", time: "19:30", key: 5 }
 ];
 
 const timetable = {
-  "月": ["教職","","日本史","総合","",""],
-  "火": ["教育","世界史","外書","","アジア史",""],
-  "水": ["","地理","人文","","",""],
-  "木": ["特別","地誌","史学展開","","日本時代","ICT教育"],
-  "金": ["","","","","",""],
-  "土": ["教育","","","","",""]
+  "月": ["教職", "", "日本史", "総合", "", ""],
+  "火": ["教育", "世界史", "外書", "", "アジア史", ""],
+  "水": ["", "地理", "人文", "", "", ""],
+  "木": ["特別", "地誌", "史学展開", "", "日本時代", "ICT教育"],
+  "金": ["", "", "", "", "", ""],
+  "土": ["教育", "", "", "", "", ""]
 };
 
-// 今日の曜日
 const todayIndex = new Date().getDay();
 const dayMap = ["日","月","火","水","木","金","土"];
 const today = dayMap[todayIndex];
 
-// 今の授業インデックス
 function getCurrentClassIndex() {
   const now = new Date();
   const minutes = now.getHours() * 60 + now.getMinutes();
 
   const ranges = [
     [8 * 60 + 30, 10 * 60 + 29],
-    [10 * 60 + 30, 12 * 60 - 1],
-    [12 * 60 + 50, 14 * 60 + 19],
-    [16 * 60 + 10, 17 * 60 + 39],
-    [17 * 60 + 50, 19 * 60 + 19],
-    [19 * 60 + 30, 21 * 60]
+    [10 * 60 + 30, 12 * 60 + 29],
+    [12 * 60 + 50, 14 * 60 + 29],
+    [16 * 60 + 10, 17 * 60 + 49],
+    [17 * 60 + 50, 19 * 60 + 29],
+    [19 * 60 + 30, 21 * 60 + 0]
   ];
 
   for (let i = 0; i < ranges.length; i++) {
@@ -153,55 +138,61 @@ function getCurrentClassIndex() {
   return -1;
 }
 
-const currentClassIndex = getCurrentClassIndex();
+const nowIndex = getCurrentClassIndex();
+const table = document.getElementById("timetable");
 
-const left = document.getElementById("left");
-const right = document.getElementById("right");
+/* ヘッダー行 */
+const headerTr = document.createElement("tr");
 
-// 左列生成
-leftRows.forEach(text => {
-  const div = document.createElement("div");
-  div.className = "cell";
-  div.innerText = text;
-  left.appendChild(div);
+const corner = document.createElement("th");
+corner.className = "corner";
+corner.textContent = "";
+headerTr.appendChild(corner);
+
+days.forEach(day => {
+  const th = document.createElement("th");
+  th.className = "day-head";
+  if (day === today) th.classList.add("today");
+  th.textContent = day;
+  headerTr.appendChild(th);
 });
 
-// 右側生成
-rightRows.forEach(rowDef => {
-  const row = document.createElement("div");
-  row.className = "row";
+table.appendChild(headerTr);
 
-  if (rowDef.type === "header") {
-    days.forEach(day => {
-      const cell = document.createElement("div");
-      cell.className = "cell header";
-      if (day === today) cell.classList.add("today");
-      cell.innerText = day;
-      row.appendChild(cell);
-    });
+/* 本体 */
+rows.forEach(row => {
+  const tr = document.createElement("tr");
+
+  if (row.type === "lunch") {
+    const th = document.createElement("th");
+    th.className = "lunch-time";
+    th.textContent = row.time;
+    tr.appendChild(th);
+
+    const td = document.createElement("td");
+    td.className = "lunch-cell";
+    td.colSpan = 6;
+    td.textContent = row.label;
+    tr.appendChild(td);
+
+    table.appendChild(tr);
+    return;
   }
 
-  if (rowDef.type === "class") {
-    days.forEach(day => {
-      const cell = document.createElement("div");
-      cell.className = "cell";
-      if (day === today) cell.classList.add("today");
-      if (day === today && rowDef.index === currentClassIndex) {
-        cell.classList.add("now");
-      }
-      cell.innerText = timetable[day][rowDef.index] || "";
-      row.appendChild(cell);
-    });
-  }
+  const th = document.createElement("th");
+  th.className = "time-col";
+  th.textContent = row.time;
+  tr.appendChild(th);
 
-  if (rowDef.type === "lunch") {
-    const lunch = document.createElement("div");
-    lunch.className = "cell lunch-right";
-    lunch.innerText = "12:50〜14:30";
-    row.appendChild(lunch);
-  }
+  days.forEach(day => {
+    const td = document.createElement("td");
+    if (day === today) td.classList.add("today");
+    if (day === today && row.key === nowIndex) td.classList.add("now");
+    td.textContent = timetable[day][row.key] || "";
+    tr.appendChild(td);
+  });
 
-  right.appendChild(row);
+  table.appendChild(tr);
 });
 </script>
 
