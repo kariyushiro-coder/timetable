@@ -147,7 +147,24 @@ function getCurrentClassIndex() {
 
 const nowIndex = getCurrentClassIndex();
 const table = document.getElementById("timetable");
+/* タイトル行（前期時間割） */
+const titleTr = document.createElement("tr");
 
+const titleTh = document.createElement("th");
+titleTh.className = "corner"; // 左の固定列
+titleTh.textContent = "";
+titleTr.appendChild(titleTh);
+
+const titleTd = document.createElement("th");
+titleTd.colSpan = 6; // 月〜土を結合
+titleTd.textContent = "前期時間割";
+titleTd.style.textAlign = "center";
+titleTd.style.fontWeight = "bold";
+titleTd.style.background = "#e3f2fd";
+
+titleTr.appendChild(titleTd);
+
+table.appendChild(titleTr);
 /* ヘッダー */
 const headerTr = document.createElement("tr");
 
