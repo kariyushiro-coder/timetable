@@ -79,12 +79,12 @@ th, td {
 }
 
 .lunch-main {
-  background: #fff9c4; /* 今日の曜日のセル */
+  background: #fff9c4;
   font-weight: bold;
 }
 
 .lunch-merge {
-  background: #ffffff; /* その右側の結合セル */
+  background: #ffffff;
 }
 </style>
 </head>
@@ -120,6 +120,9 @@ const timetable = {
 const todayIndex = new Date().getDay();
 const dayMap = ["日","月","火","水","木","金","土"];
 const today = dayMap[todayIndex];
+
+/* 日曜なら -1 になるので 0 にして崩れ防止 */
+const todayIndexInWeek = Math.max(0, days.indexOf(today));
 
 function getCurrentClassIndex() {
   const now = new Date();
@@ -168,38 +171,37 @@ rows.forEach(row => {
   const tr = document.createElement("tr");
 
   if (row.type === "lunch") {
-  const th = document.createElement("th");
-  th.className = "lunch-time";
-  th.textContent = row.time;
-  tr.appendChild(th);
+    const th = document.createElement("th");
+    th.className = "lunch-time";
+    th.textContent = row.time;
+    tr.appendChild(th);
 
-  const todayIndexInWeek = days.indexOf(today);
+    // 今日より前は空白
+    for (let i = 0; i < todayIndexInWeek; i++) {
+      const empty = document.createElement("td");
+      empty.textContent = "";
+      tr.appendChild(empty);
+    }
 
-  // 今日より前は空白
-  for (let i = 0; i < todayIndexInWeek; i++) {
-    const empty = document.createElement("td");
-    tr.appendChild(empty);
+    // 今日の曜日のセル
+    const main = document.createElement("td");
+    main.className = "lunch-main";
+    main.textContent = row.label;
+    tr.appendChild(main);
+
+    // 今日より後を結合
+    const remain = 5 - todayIndexInWeek;
+    if (remain > 0) {
+      const merged = document.createElement("td");
+      merged.className = "lunch-merge";
+      merged.colSpan = remain;
+      merged.textContent = "";
+      tr.appendChild(merged);
+    }
+
+    table.appendChild(tr);
+    return;
   }
-
-  // 今日のセル（12:50〜14:30）
-  const main = document.createElement("td");
-  main.className = "lunch-main";
-  main.textContent = row.label;
-  tr.appendChild(main);
-
-  // 今日より後を結合
-  const remain = 5 - todayIndexInWeek;
-  if (remain > 0) {
-    const merged = document.createElement("td");
-    merged.className = "lunch-merge";
-    merged.colSpan = remain;
-    merged.textContent = "";
-    tr.appendChild(merged);
-  }
-
-  table.appendChild(tr);
-  return;
-}
 
   const th = document.createElement("th");
   th.className = "time-col";
