@@ -1,163 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>時間割アプリ</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<style>
-body {
-  margin: 0;
-  font-family: sans-serif;
-}
-
-.wrap {
-  overflow-x: auto;
-}
-
-table {
-  border-collapse: collapse;
-  table-layout: fixed;
-  min-width: 800px;
-}
-
-th, td {
-  border: 1px solid #ccc;
-  width: 120px;
-  height: 50px;
-  text-align: center;
-  vertical-align: middle;
-  padding: 0;
-  background: #fff;
-}
-
-/* 左端の時間列を固定 */
-.time-col {
-  width: 80px;
-  min-width: 80px;
-  background: #eee;
-  position: sticky;
-  left: 0;
-  z-index: 2;
-}
-
-/* 左上の空白セル */
-.corner {
-  width: 80px;
-  min-width: 80px;
-  background: #eee;
-  position: sticky;
-  left: 0;
-  z-index: 3;
-}
-
-/* 曜日ヘッダー */
-.day-head {
-  background: #f5f5f5;
-  font-weight: bold;
-}
-
-/* 今日の曜日 */
-.today {
-  background: #ffe0b2;
-}
-
-/* 今の授業 */
-.now {
-  background: #ffccbc;
-  box-shadow: inset 0 0 0 2px #ff5722;
-  font-weight: bold;
-}
-
-/* 昼休み */
-.lunch-time {
-  background: #eee;
-  position: sticky;
-  left: 0;
-  z-index: 2;
-  font-weight: bold;
-}
-
-.lunch-cell {
-  background: #fff9c4;
-  font-weight: bold;
-}
-</style>
-</head>
-
-<body>
-
-<div class="wrap">
-  <table id="timetable"></table>
-</div>
-
 <script>
 const days = ["月","火","水","木","金","土"];
-
-const rows = [
-  { type: "class", time: "8:30",  key: 0 },
-  { type: "class", time: "10:30", key: 1 },
-  { type: "class", time: "12:50", key: 2 },
-  { type: "lunch", time: "昼休み", label: "12:50〜14:30" },
-  { type: "class", time: "16:10", key: 3 },
-  { type: "class", time: "17:50", key: 4 },
-  { type: "class", time: "19:30", key: 5 }
-];
-
-const timetable = {
-  "月": ["教職", "", "日本史", "総合", "", ""],
-  "火": ["教育", "世界史", "外書", "", "アジア史", ""],
-  "水": ["", "地理", "人文", "", "", ""],
-  "木": ["特別", "地誌", "史学展開", "", "日本時代", "ICT教育"],
-  "金": ["", "", "", "", "", ""],
-  "土": ["教育", "", "", "", "", ""]
-};
 
 const todayIndex = new Date().getDay();
 const dayMap = ["日","月","火","水","木","金","土"];
 const today = dayMap[todayIndex];
 
-function getCurrentClassIndex() {
-  const now = new Date();
-  const minutes = now.getHours() * 60 + now.getMinutes();
-
-  const ranges = [
-    [8 * 60 + 30, 10 * 60 + 29],
-    [10 * 60 + 30, 12 * 60 + 29],
-    [12 * 60 + 50, 14 * 60 + 29],
-    [16 * 60 + 10, 17 * 60 + 49],
-    [17 * 60 + 50, 19 * 60 + 29],
-    [19 * 60 + 30, 21 * 60 + 0]
-  ];
-
-  for (let i = 0; i < ranges.length; i++) {
-    if (minutes >= ranges[i][0] && minutes <= ranges[i][1]) {
-      return i;
-    }
-  }
-  return -1;
-}
-
-const nowIndex = getCurrentClassIndex();
-const table = document.getElementById("timetable");
-
-/* ヘッダー行 */
-const headerTr = document.createElement("tr");
-
-const corner = document.createElement("th");
-corner.className = "corner";
-corner.textContent = "";
-headerTr.appendChild(corner);
-
-days.forEach(day => {
-  const th = document.createElement("th");
-  th.className = "day-head";
-  if (day === today) th.classList.add("today");
-  th.textContent = day;
-  headerTr.appendChild(th);
-});
-
-table.appendChild(headerTr);
+/* 月〜土の中で今日が何番目か */
+const todayCol = days.indexOf(today);
 
 /* 本体 */
 rows.forEach(row => {
@@ -169,9 +18,17 @@ rows.forEach(row => {
     th.textContent = row.time;
     tr.appendChild(th);
 
+    /* 今日より前を空セルで埋める */
+    const beforeCount = todayCol >= 0 ? todayCol : 0;
+    for (let i = 0; i < beforeCount; i++) {
+      const empty = document.createElement("td");
+      tr.appendChild(empty);
+    }
+
+    /* 今日の曜日から右を結合 */
     const td = document.createElement("td");
     td.className = "lunch-cell";
-    td.colSpan = 6;
+    td.colSpan = todayCol >= 0 ? (6 - todayCol) : 6;
     td.textContent = row.label;
     tr.appendChild(td);
 
@@ -195,6 +52,3 @@ rows.forEach(row => {
   table.appendChild(tr);
 });
 </script>
-
-</body>
-</html>
