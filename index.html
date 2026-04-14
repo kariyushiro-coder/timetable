@@ -120,6 +120,23 @@ th, td {
   table {
   transform-origin: top left;
 }
+  /* ===== スマホ最適化（左固定を壊さない版） ===== */
+@media screen and (max-width: 600px) {
+
+  th, td {
+    width: 85px;
+    font-size: 12px;
+  }
+
+  .time-col,
+  .corner,
+  .lunch-time {
+    width: 60px;
+    min-width: 60px;
+    font-size: 12px;
+  }
+
+}
 </style>
 </head>
 
@@ -288,22 +305,7 @@ rows.forEach(row => {
 
   table.appendChild(tr);
 });
-  // ★スマホ用：縮小調整
-function adjustScale() {
-  const table = document.getElementById("timetable");
-  const wrapper = document.querySelector(".wrap");
-
-  let scale = wrapper.clientWidth / table.scrollWidth;
-
-  // 小さくなりすぎ防止（ここ重要）
-  if (scale < 0.85) scale = 0.85;
-
-  table.style.transform = "scale(" + scale + ")";
-}
-
-// 読み込み時と画面サイズ変更時に実行
-window.addEventListener("load", adjustScale);
-window.addEventListener("resize", adjustScale);
+ 
 </script>
 
 </body>
