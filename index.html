@@ -78,9 +78,13 @@ th, td {
   font-weight: bold;
 }
 
-.lunch-cell {
-  background: #fff9c4;
+.lunch-main {
+  background: #fff9c4; /* 今日の曜日のセル */
   font-weight: bold;
+}
+
+.lunch-merge {
+  background: #ffffff; /* その右側の結合セル */
 }
 </style>
 </head>
@@ -164,32 +168,38 @@ rows.forEach(row => {
   const tr = document.createElement("tr");
 
   if (row.type === "lunch") {
-    const th = document.createElement("th");
-    th.className = "lunch-time";
-    th.textContent = row.time;
-    tr.appendChild(th);
+  const th = document.createElement("th");
+  th.className = "lunch-time";
+  th.textContent = row.time;
+  tr.appendChild(th);
 
-    // 月曜は空白
-    const mondayBlank = document.createElement("td");
-    mondayBlank.textContent = "";
-    tr.appendChild(mondayBlank);
+  const todayIndexInWeek = days.indexOf(today);
 
-    // 火曜に 12:50〜14:30
-    const tueCell = document.createElement("td");
-    tueCell.className = "lunch-cell";
-    tueCell.textContent = row.label;
-    tr.appendChild(tueCell);
+  // 今日より前は空白
+  for (let i = 0; i < todayIndexInWeek; i++) {
+    const empty = document.createElement("td");
+    tr.appendChild(empty);
+  }
 
-    // 水〜土を結合
+  // 今日のセル（12:50〜14:30）
+  const main = document.createElement("td");
+  main.className = "lunch-main";
+  main.textContent = row.label;
+  tr.appendChild(main);
+
+  // 今日より後を結合
+  const remain = 5 - todayIndexInWeek;
+  if (remain > 0) {
     const merged = document.createElement("td");
-    merged.className = "lunch-cell";
-    merged.colSpan = 4;
+    merged.className = "lunch-merge";
+    merged.colSpan = remain;
     merged.textContent = "";
     tr.appendChild(merged);
-
-    table.appendChild(tr);
-    return;
   }
+
+  table.appendChild(tr);
+  return;
+}
 
   const th = document.createElement("th");
   th.className = "time-col";
