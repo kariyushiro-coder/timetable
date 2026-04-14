@@ -110,6 +110,9 @@ th, td {
   th, td {
   width: 80px;
 }
+  .title-row th {
+  background: #e3f2fd; /* 行全体の色 */
+}
 </style>
 </head>
 
@@ -173,6 +176,7 @@ const nowIndex = getCurrentClassIndex();
 const table = document.getElementById("timetable");
 /* タイトル行（前期時間割） */
 const titleTr = document.createElement("tr");
+titleTr.className = "title-row";
 
 const titleTh = document.createElement("th");
 titleTh.className = "corner";
