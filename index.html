@@ -305,7 +305,24 @@ rows.forEach(row => {
 
   table.appendChild(tr);
 });
- 
+ // 今日の列を最初から中央付近に表示
+window.addEventListener("load", () => {
+  const wrap = document.querySelector(".wrap");
+
+  // 日曜なら月曜位置、月〜土なら 0〜5
+  const dayIndex = Math.max(0, days.indexOf(today));
+
+  const leftColWidth = 60;   // スマホ用CSSに合わせる（PCなら80でも可）
+  const dayColWidth = 85;    // スマホ用CSSに合わせる（PCなら120でも可）
+
+  const todayCellCenter =
+    leftColWidth + (dayIndex * dayColWidth) + (dayColWidth / 2);
+
+  const targetScroll =
+    todayCellCenter - (wrap.clientWidth / 2);
+
+  wrap.scrollLeft = Math.max(0, targetScroll);
+});
 </script>
 
 </body>
