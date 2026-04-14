@@ -59,12 +59,14 @@ body {
   font-weight: bold;
 }
 
-/* 昼休み右側 */
+/* 昼休み右側：月〜土を結合 */
 .lunch-right {
-  width: 720px; /* 120px × 6列 */
+  width: 720px;      /* 120px × 6列 */
   min-width: 720px;
   background: #fff9c4;
   font-weight: bold;
+  justify-content: center;
+  text-align: center;
 }
 
 /* 今日の曜日 */
@@ -91,7 +93,7 @@ body {
 <script>
 const days = ["月","火","水","木","金","土"];
 
-// 左列に表示する内容
+// 左列
 const leftRows = [
   "",
   "8:30",
@@ -135,12 +137,12 @@ function getCurrentClassIndex() {
   const minutes = now.getHours() * 60 + now.getMinutes();
 
   const ranges = [
-    [8 * 60 + 30, 10 * 60 + 29],  // 1限
-    [10 * 60 + 30, 12 * 60 - 1],  // 2限
-    [12 * 60 + 50, 14 * 60 + 19], // 3限
-    [16 * 60 + 10, 17 * 60 + 39], // 4限
-    [17 * 60 + 50, 19 * 60 + 19], // 5限
-    [19 * 60 + 30, 21 * 60]       // 6限
+    [8 * 60 + 30, 10 * 60 + 29],
+    [10 * 60 + 30, 12 * 60 - 1],
+    [12 * 60 + 50, 14 * 60 + 19],
+    [16 * 60 + 10, 17 * 60 + 39],
+    [17 * 60 + 50, 19 * 60 + 19],
+    [19 * 60 + 30, 21 * 60]
   ];
 
   for (let i = 0; i < ranges.length; i++) {
