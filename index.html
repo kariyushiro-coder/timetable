@@ -7,161 +7,188 @@
 
 <style>
 :root {
-  --forest-bg: #eef6ee;
-  --forest-card: #f9fdf8;
-  --forest-main: #5f8f57;
-  --forest-deep: #355e3b;
-  --forest-light: #dcefd8;
-  --forest-accent: #9fcd8f;
-  --forest-line: #c8ddc3;
-  --forest-today: #dff3d8;
-  --forest-now: #7aa86f;
-  --forest-now-text: #ffffff;
-  --forest-title: #e8f5e4;
-  --shadow: 0 6px 18px rgba(53, 94, 59, 0.12);
+  --bg-1: #eef7ee;
+  --bg-2: #dfeedd;
+  --card: rgba(255,255,255,0.72);
+  --line: #d4e4d0;
+  --text: #2f4330;
+
+  --forest-1: #6ea56d;
+  --forest-2: #4f7f51;
+  --forest-3: #355d39;
+
+  --today: #e2f3dc;
+  --now: #5f8f57;
+  --now-text: #ffffff;
+
+  --time-bg: #edf5ea;
+  --head-bg: #f3faf1;
+  --title-bg: #dcefd7;
+
+  --lunch-main: #eef6c8;
+  --lunch-merge: #ffffff;
+
+  --shadow-lg: 0 16px 40px rgba(43, 75, 47, 0.16);
+  --shadow-sm: 0 4px 14px rgba(43, 75, 47, 0.10);
+
+  --radius-xl: 24px;
+  --radius-lg: 18px;
+  --radius-md: 14px;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
   font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+  color: var(--text);
   background:
-    linear-gradient(180deg, #f4faf3 0%, #eaf4e8 100%);
-  color: #2f3b2f;
+    radial-gradient(circle at top left, rgba(126, 179, 118, 0.20), transparent 28%),
+    radial-gradient(circle at top right, rgba(95, 143, 87, 0.14), transparent 22%),
+    linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
 }
 
-.app-shell {
-  max-width: 1000px;
+.app {
+  max-width: 1100px;
   margin: 18px auto;
   padding: 12px;
 }
 
-.app-card {
-  background: var(--forest-card);
-  border: 1px solid var(--forest-line);
-  border-radius: 22px;
-  box-shadow: var(--shadow);
+.app-shell {
+  background: var(--card);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
   overflow: hidden;
 }
 
-.app-header {
-  padding: 16px 18px;
-  background: linear-gradient(135deg, #6fa56a 0%, #4f7f49 100%);
+.hero {
+  padding: 18px 18px 14px;
+  background:
+    linear-gradient(135deg, rgba(110,165,109,0.95) 0%, rgba(79,127,81,0.95) 100%);
   color: #fff;
 }
 
-.app-title {
-  font-size: 20px;
+.hero-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hero-badge {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.15);
+}
+
+.hero-title {
+  font-size: 22px;
   font-weight: 700;
   letter-spacing: 0.04em;
 }
 
-.app-subtitle {
+.hero-sub {
+  margin-top: 6px;
   font-size: 12px;
   opacity: 0.9;
-  margin-top: 4px;
+  letter-spacing: 0.04em;
 }
 
-/* 横スクロール */
-.wrap {
+.table-wrap {
+  padding: 12px;
   overflow-x: auto;
   overflow-y: hidden;
-  background: linear-gradient(180deg, #f8fcf7 0%, #f2f8f0 100%);
-  padding: 10px;
+  scroll-behavior: smooth;
 }
 
-/* スクロールバー少しだけ整える */
-.wrap::-webkit-scrollbar {
+.table-wrap::-webkit-scrollbar {
   height: 10px;
 }
-.wrap::-webkit-scrollbar-track {
-  background: #e7f0e4;
+.table-wrap::-webkit-scrollbar-track {
+  background: rgba(110,165,109,0.10);
   border-radius: 999px;
 }
-.wrap::-webkit-scrollbar-thumb {
-  background: #a8c9a0;
+.table-wrap::-webkit-scrollbar-thumb {
+  background: rgba(95,143,87,0.45);
   border-radius: 999px;
 }
 
-/* テーブル */
 table {
   border-collapse: separate;
   border-spacing: 0;
   table-layout: fixed;
-  min-width: 800px;
-  background: transparent;
+  min-width: 820px;
+  transform-origin: top left;
 }
 
 th, td {
-  border-right: 1px solid var(--forest-line);
-  border-bottom: 1px solid var(--forest-line);
   width: 120px;
-  height: 56px;
+  height: 54px;
   text-align: center;
   vertical-align: middle;
   padding: 0;
-  box-sizing: border-box;
-  background: rgba(255,255,255,0.88);
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: rgba(255,255,255,0.86);
   white-space: nowrap;
   font-size: 14px;
 }
 
-/* 外枠の角丸感を出す */
-table tr:first-child th:first-child {
-  border-top-left-radius: 16px;
-}
-table tr:first-child th:last-child {
-  border-top-right-radius: 16px;
+/* 左端 */
+.corner,
+.time-col,
+.lunch-time {
+  width: 92px;
+  min-width: 92px;
+  background: var(--time-bg);
+  position: sticky;
+  left: 0;
+  z-index: 4;
+  color: var(--forest-3);
+  font-weight: 700;
 }
 
 /* 左上 */
 .corner {
-  width: 92px;
-  min-width: 92px;
-  background: linear-gradient(180deg, #edf5ea 0%, #e0eddc 100%);
-  position: sticky;
-  left: 0;
-  z-index: 5;
-  border-left: 1px solid var(--forest-line);
-  border-top: 1px solid var(--forest-line);
-  font-weight: 700;
-  color: var(--forest-deep);
+  z-index: 6;
   white-space: pre-line;
+  border-left: 1px solid var(--line);
 }
 
 /* 時間列 */
 .time-col {
-  width: 92px;
-  min-width: 92px;
-  background: linear-gradient(180deg, #eef6ec 0%, #e4efe1 100%);
-  position: sticky;
-  left: 0;
-  z-index: 4;
-  border-left: 1px solid var(--forest-line);
-  font-weight: 700;
-  color: var(--forest-deep);
   white-space: pre-line;
-  line-height: 1.2;
+  line-height: 1.15;
+  border-left: 1px solid var(--line);
 }
 
 /* 曜日ヘッダー */
 .day-head {
-  background: linear-gradient(180deg, #f5fbf3 0%, #eaf5e7 100%);
-  font-weight: 700;
+  background: var(--head-bg);
   position: sticky;
-  top: 56px;
+  top: 54px;
   z-index: 3;
-  border-top: 1px solid var(--forest-line);
-  color: var(--forest-deep);
+  font-weight: 700;
+  color: var(--forest-3);
 }
 
 /* タイトル行 */
 .title-row th {
-  background: linear-gradient(180deg, #e4f3df 0%, #d6ebd0 100%);
+  background: var(--title-bg);
+  color: var(--forest-3);
   border-left: none;
   border-right: none;
   font-weight: 700;
-  color: var(--forest-deep);
-  height: 56px;
+  height: 54px;
 }
 
 .title-main {
@@ -171,70 +198,83 @@ table tr:first-child th:last-child {
 
 /* 今日 */
 .today {
-  background: var(--forest-today) !important;
+  background: var(--today) !important;
 }
 
 /* 今の授業 */
 .now {
-  background: var(--forest-now) !important;
-  color: var(--forest-now-text);
-  box-shadow: inset 0 0 0 2px #4b7a45;
+  background: var(--now) !important;
+  color: var(--now-text);
+  box-shadow: inset 0 0 0 2px #416a43;
   font-weight: 700;
 }
 
-/* 昼休み左 */
+/* 昼休み */
 .lunch-time {
-  width: 92px;
-  min-width: 92px;
-  background: linear-gradient(180deg, #eef6ec 0%, #e4efe1 100%);
-  position: sticky;
-  left: 0;
   z-index: 4;
-  font-weight: 700;
-  color: var(--forest-deep);
-  border-left: 1px solid var(--forest-line);
 }
 
-/* 昼休み右 */
 .lunch-main {
-  background: linear-gradient(180deg, #f3f9cf 0%, #eaf3bf 100%);
+  background: var(--lunch-main);
   font-weight: 700;
-  color: #55622f;
+  color: #586437;
 }
 
 .lunch-merge {
-  background: rgba(255,255,255,0.95);
+  background: var(--lunch-merge);
 }
 
-/* 角丸っぽく見せる余白 */
-tbody tr:last-child th.time-col,
-tbody tr:last-child th.lunch-time {
+/* 角丸感 */
+table tr:first-child th:first-child {
+  border-top-left-radius: 16px;
+}
+table tr:first-child th:last-child {
+  border-top-right-radius: 16px;
+}
+table tr:last-child th.time-col,
+table tr:last-child th.lunch-time {
   border-bottom-left-radius: 16px;
+}
+table tr:last-child td:last-child {
+  border-bottom-right-radius: 16px;
+}
+
+/* 上下の外枠 */
+table tr:first-child th {
+  border-top: 1px solid var(--line);
+}
+table tr td:first-of-type,
+table tr th:first-of-type {
+  border-left: 1px solid var(--line);
 }
 
 /* スマホ */
 @media screen and (max-width: 600px) {
-  .app-shell {
-    padding: 8px;
+  .app {
     margin: 10px auto;
+    padding: 8px;
   }
 
-  .app-header {
-    padding: 14px 14px;
+  .hero {
+    padding: 14px 14px 12px;
   }
 
-  .app-title {
+  .hero-title {
     font-size: 18px;
+  }
+
+  .hero-sub {
+    font-size: 11px;
   }
 
   th, td {
     width: 88px;
-    font-size: 12px;
     height: 48px;
+    font-size: 12px;
   }
 
-  .time-col,
   .corner,
+  .time-col,
   .lunch-time {
     width: 64px;
     min-width: 64px;
@@ -259,15 +299,18 @@ tbody tr:last-child th.lunch-time {
 
 <body>
 
-<div class="app-shell">
-  <div class="app-card">
+<div class="app">
+  <div class="app-shell">
 
-    <div class="app-header">
-      <div class="app-title">時間割アプリ</div>
-      <div class="app-subtitle">Forest Theme</div>
+    <div class="hero">
+      <div class="hero-top">
+        <div class="hero-badge">🌿</div>
+        <div class="hero-title">時間割アプリ</div>
+      </div>
+      <div class="hero-sub">Forest Theme</div>
     </div>
 
-    <div class="wrap">
+    <div class="table-wrap wrap">
       <table id="timetable"></table>
     </div>
 
@@ -357,7 +400,7 @@ if (titleRemain > 0) {
 
 table.appendChild(titleTr);
 
-/* ヘッダー */
+/* 曜日ヘッダー */
 const headerTr = document.createElement("tr");
 
 const corner = document.createElement("th");
