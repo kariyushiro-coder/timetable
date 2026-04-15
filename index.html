@@ -6,141 +6,272 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-body {
-  margin: 0;
-  font-family: sans-serif;
+:root {
+  --forest-bg: #eef6ee;
+  --forest-card: #f9fdf8;
+  --forest-main: #5f8f57;
+  --forest-deep: #355e3b;
+  --forest-light: #dcefd8;
+  --forest-accent: #9fcd8f;
+  --forest-line: #c8ddc3;
+  --forest-today: #dff3d8;
+  --forest-now: #7aa86f;
+  --forest-now-text: #ffffff;
+  --forest-title: #e8f5e4;
+  --shadow: 0 6px 18px rgba(53, 94, 59, 0.12);
 }
 
+body {
+  margin: 0;
+  font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+  background:
+    linear-gradient(180deg, #f4faf3 0%, #eaf4e8 100%);
+  color: #2f3b2f;
+}
+
+.app-shell {
+  max-width: 1000px;
+  margin: 18px auto;
+  padding: 12px;
+}
+
+.app-card {
+  background: var(--forest-card);
+  border: 1px solid var(--forest-line);
+  border-radius: 22px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.app-header {
+  padding: 16px 18px;
+  background: linear-gradient(135deg, #6fa56a 0%, #4f7f49 100%);
+  color: #fff;
+}
+
+.app-title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.app-subtitle {
+  font-size: 12px;
+  opacity: 0.9;
+  margin-top: 4px;
+}
+
+/* 横スクロール */
 .wrap {
   overflow-x: auto;
   overflow-y: hidden;
+  background: linear-gradient(180deg, #f8fcf7 0%, #f2f8f0 100%);
+  padding: 10px;
 }
 
+/* スクロールバー少しだけ整える */
+.wrap::-webkit-scrollbar {
+  height: 10px;
+}
+.wrap::-webkit-scrollbar-track {
+  background: #e7f0e4;
+  border-radius: 999px;
+}
+.wrap::-webkit-scrollbar-thumb {
+  background: #a8c9a0;
+  border-radius: 999px;
+}
+
+/* テーブル */
 table {
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   table-layout: fixed;
   min-width: 800px;
-  background: #fff;
-  transform-origin: top left;
+  background: transparent;
 }
 
 th, td {
-  border: 1px solid #ccc;
+  border-right: 1px solid var(--forest-line);
+  border-bottom: 1px solid var(--forest-line);
   width: 120px;
-  height: 50px;
+  height: 56px;
   text-align: center;
   vertical-align: middle;
   padding: 0;
   box-sizing: border-box;
+  background: rgba(255,255,255,0.88);
   white-space: nowrap;
+  font-size: 14px;
+}
+
+/* 外枠の角丸感を出す */
+table tr:first-child th:first-child {
+  border-top-left-radius: 16px;
+}
+table tr:first-child th:last-child {
+  border-top-right-radius: 16px;
 }
 
 /* 左上 */
 .corner {
-  width: 80px;
-  min-width: 80px;
-  background: #eee;
+  width: 92px;
+  min-width: 92px;
+  background: linear-gradient(180deg, #edf5ea 0%, #e0eddc 100%);
   position: sticky;
   left: 0;
-  z-index: 4;
+  z-index: 5;
+  border-left: 1px solid var(--forest-line);
+  border-top: 1px solid var(--forest-line);
+  font-weight: 700;
+  color: var(--forest-deep);
+  white-space: pre-line;
 }
 
 /* 時間列 */
 .time-col {
-  width: 80px;
-  min-width: 80px;
-  background: #eee;
+  width: 92px;
+  min-width: 92px;
+  background: linear-gradient(180deg, #eef6ec 0%, #e4efe1 100%);
   position: sticky;
   left: 0;
-  z-index: 3;
+  z-index: 4;
+  border-left: 1px solid var(--forest-line);
+  font-weight: 700;
+  color: var(--forest-deep);
+  white-space: pre-line;
+  line-height: 1.2;
 }
 
 /* 曜日ヘッダー */
 .day-head {
-  background: #f5f5f5;
-  font-weight: bold;
+  background: linear-gradient(180deg, #f5fbf3 0%, #eaf5e7 100%);
+  font-weight: 700;
   position: sticky;
-  top: 50px;
-  z-index: 2;
-}
-
-/* 今日 */
-.today {
-  background: #ffe0b2;
-}
-
-/* 今の授業 */
-.now {
-  background: #ffccbc;
-  box-shadow: inset 0 0 0 2px #ff5722;
-  font-weight: bold;
-}
-
-/* 昼休み左 */
-.lunch-time {
-  width: 80px;
-  min-width: 80px;
-  background: #eee;
-  position: sticky;
-  left: 0;
+  top: 56px;
   z-index: 3;
-  font-weight: bold;
-}
-
-/* 昼休み右 */
-.lunch-main {
-  background: #fff9c4;
-  font-weight: bold;
-}
-
-.lunch-merge {
-  background: #ffffff;
+  border-top: 1px solid var(--forest-line);
+  color: var(--forest-deep);
 }
 
 /* タイトル行 */
 .title-row th {
-  background: #e3f2fd;
+  background: linear-gradient(180deg, #e4f3df 0%, #d6ebd0 100%);
   border-left: none;
   border-right: none;
+  font-weight: 700;
+  color: var(--forest-deep);
+  height: 56px;
 }
 
-/* 自動調整をなめらかに */
-.fit-target th,
-.fit-target td {
-  transition: height 0.2s, font-size 0.2s, width 0.2s, min-width 0.2s;
+.title-main {
+  font-size: 18px;
+  letter-spacing: 0.08em;
 }
 
-/* スマホ基本調整 */
+/* 今日 */
+.today {
+  background: var(--forest-today) !important;
+}
+
+/* 今の授業 */
+.now {
+  background: var(--forest-now) !important;
+  color: var(--forest-now-text);
+  box-shadow: inset 0 0 0 2px #4b7a45;
+  font-weight: 700;
+}
+
+/* 昼休み左 */
+.lunch-time {
+  width: 92px;
+  min-width: 92px;
+  background: linear-gradient(180deg, #eef6ec 0%, #e4efe1 100%);
+  position: sticky;
+  left: 0;
+  z-index: 4;
+  font-weight: 700;
+  color: var(--forest-deep);
+  border-left: 1px solid var(--forest-line);
+}
+
+/* 昼休み右 */
+.lunch-main {
+  background: linear-gradient(180deg, #f3f9cf 0%, #eaf3bf 100%);
+  font-weight: 700;
+  color: #55622f;
+}
+
+.lunch-merge {
+  background: rgba(255,255,255,0.95);
+}
+
+/* 角丸っぽく見せる余白 */
+tbody tr:last-child th.time-col,
+tbody tr:last-child th.lunch-time {
+  border-bottom-left-radius: 16px;
+}
+
+/* スマホ */
 @media screen and (max-width: 600px) {
+  .app-shell {
+    padding: 8px;
+    margin: 10px auto;
+  }
+
+  .app-header {
+    padding: 14px 14px;
+  }
+
+  .app-title {
+    font-size: 18px;
+  }
+
   th, td {
-    width: 85px;
+    width: 88px;
     font-size: 12px;
+    height: 48px;
   }
 
   .time-col,
   .corner,
   .lunch-time {
-    width: 60px;
-    min-width: 60px;
+    width: 64px;
+    min-width: 64px;
     font-size: 12px;
   }
 
   .day-head {
-    font-size: 13px;
+    top: 48px;
+    font-size: 12px;
   }
-}
-  .time-col {
-  white-space: pre-line;
-  font-size: 12px;
-  line-height: 1.2;
+
+  .title-row th {
+    height: 48px;
+  }
+
+  .title-main {
+    font-size: 15px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="wrap">
-  <table id="timetable"></table>
+<div class="app-shell">
+  <div class="app-card">
+
+    <div class="app-header">
+      <div class="app-title">時間割アプリ</div>
+      <div class="app-subtitle">Forest Theme</div>
+    </div>
+
+    <div class="wrap">
+      <table id="timetable"></table>
+    </div>
+
+  </div>
 </div>
 
 <script>
@@ -168,8 +299,6 @@ const timetable = {
 const todayIndex = new Date().getDay();
 const dayMap = ["日","月","火","水","木","金","土"];
 const today = dayMap[todayIndex];
-
-/* 日曜なら -1 になるので 0 にして崩れ防止 */
 const todayIndexInWeek = Math.max(0, days.indexOf(today));
 
 function getCurrentClassIndex() {
@@ -202,33 +331,27 @@ titleTr.className = "title-row";
 
 const titleTh = document.createElement("th");
 titleTh.className = "corner";
-titleTh.textContent = "";
+titleTh.textContent = "開始\n時刻";
 titleTr.appendChild(titleTh);
 
-// 今日より前は空白
 for (let i = 0; i < todayIndexInWeek; i++) {
   const empty = document.createElement("th");
   empty.textContent = "";
   titleTr.appendChild(empty);
 }
 
-// 今日の曜日の位置にタイトル
 const titleMain = document.createElement("th");
-titleMain.className = "lunch-main";
+titleMain.className = "lunch-main title-main";
 titleMain.textContent = "前期時間割";
 titleMain.style.textAlign = "center";
-titleMain.style.fontWeight = "bold";
-titleMain.style.background = "#e3f2fd";
 titleTr.appendChild(titleMain);
 
-// 今日より後を結合
 const titleRemain = 5 - todayIndexInWeek;
 if (titleRemain > 0) {
   const titleMerged = document.createElement("th");
   titleMerged.className = "lunch-merge";
   titleMerged.colSpan = titleRemain;
   titleMerged.textContent = "";
-  titleMerged.style.background = "#e3f2fd";
   titleTr.appendChild(titleMerged);
 }
 
@@ -239,7 +362,7 @@ const headerTr = document.createElement("tr");
 
 const corner = document.createElement("th");
 corner.className = "corner";
-corner.textContent = "開始時刻";
+corner.textContent = "";
 headerTr.appendChild(corner);
 
 days.forEach(day => {
@@ -262,20 +385,17 @@ rows.forEach(row => {
     th.textContent = row.time;
     tr.appendChild(th);
 
-    // 今日より前は空白
     for (let i = 0; i < todayIndexInWeek; i++) {
       const empty = document.createElement("td");
       empty.textContent = "";
       tr.appendChild(empty);
     }
 
-    // 今日の曜日のセル
     const main = document.createElement("td");
     main.className = "lunch-main";
     main.textContent = row.label;
     tr.appendChild(main);
 
-    // 今日より後を結合
     const remain = 5 - todayIndexInWeek;
     if (remain > 0) {
       const merged = document.createElement("td");
@@ -325,79 +445,7 @@ window.addEventListener("load", () => {
 
     wrap.scrollLeft = Math.max(0, targetScroll);
   }
-
-  fitTableToScreen();
 });
-
-/* 1画面に収める自動調整 */
-function fitTableToScreen() {
-  const wrap = document.querySelector(".wrap");
-  const table = document.getElementById("timetable");
-  if (!wrap || !table) return;
-
-  table.classList.add("fit-target");
-  table.style.transform = "none";
-
-  const allRows = table.querySelectorAll("tr");
-  if (allRows.length === 0) return;
-
-  const thtd = table.querySelectorAll("th, td");
-  const leftCells = table.querySelectorAll(".corner, .time-col, .lunch-time");
-
-  let rowHeight = 50;
-  let fontSize = 16;
-  let leftWidth = 80;
-  let dayWidth = 120;
-
-  const viewportH = window.innerHeight;
-  const reserve = 16;
-  const availableH = viewportH - reserve;
-
-  const rowCount = allRows.length;
-
-  rowHeight = Math.floor(availableH / rowCount);
-  if (rowHeight > 50) rowHeight = 50;
-  if (rowHeight < 28) rowHeight = 28;
-
-  fontSize = Math.floor(rowHeight * 0.32);
-  if (fontSize > 16) fontSize = 16;
-  if (fontSize < 10) fontSize = 10;
-
-  leftWidth = Math.max(48, Math.min(80, Math.floor(rowHeight * 1.5)));
-  dayWidth = Math.max(68, Math.min(120, Math.floor(rowHeight * 2.4)));
-
-  thtd.forEach(cell => {
-    cell.style.height = rowHeight + "px";
-    cell.style.fontSize = fontSize + "px";
-    cell.style.lineHeight = "1.1";
-  });
-
-  leftCells.forEach(cell => {
-    cell.style.width = leftWidth + "px";
-    cell.style.minWidth = leftWidth + "px";
-  });
-
-  const allTableCells = table.querySelectorAll("th, td");
-  allTableCells.forEach(cell => {
-    const isLeft =
-      cell.classList.contains("corner") ||
-      cell.classList.contains("time-col") ||
-      cell.classList.contains("lunch-time");
-
-    const isMerged =
-      cell.classList.contains("lunch-main") ||
-      cell.classList.contains("lunch-merge");
-
-    if (!isLeft && !isMerged) {
-      cell.style.width = dayWidth + "px";
-      cell.style.minWidth = dayWidth + "px";
-    }
-  });
-}
-
-/* リサイズ時にも再調整 */
-window.addEventListener("resize", fitTableToScreen);
-window.addEventListener("orientationchange", fitTableToScreen);
 </script>
 
 </body>
