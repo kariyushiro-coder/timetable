@@ -301,7 +301,7 @@ table tr th:first-of-type {
   }
 
   th, td {
-    width: 56px;
+    width: 52px;   /* ← 56 から変更 */
     height: 40px;
     font-size: 9px;
   }
@@ -309,8 +309,8 @@ table tr th:first-of-type {
   .corner,
   .time-col,
   .lunch-time {
-    width: 42px;
-    min-width: 42px;
+    width: 40px;   /* ← 42 から変更 */
+    min-width: 40px;
     font-size: 9px;
   }
 
@@ -532,7 +532,7 @@ function positionPortrait() {
     const dayColWidth = 56;
     const todayLeft = leftColWidth + (todayIndexInWeek * dayColWidth);
 
-    wrap.scrollLeft = Math.max(0, todayLeft - 10);
+    wrap.scrollLeft = Math.max(0, todayLeft - 2);
   }
 }
 
