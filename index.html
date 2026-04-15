@@ -517,19 +517,19 @@ rows.forEach(row => {
    横表示：中央スクロールしない */
 function centerTodayIfPortrait() {
   const wrap = document.querySelector(".wrap");
-  const headers = document.querySelectorAll(".day-head");
-  const todayHeader = headers[todayIndexInWeek];
-  if (!wrap || !todayHeader) return;
+  if (!wrap) return;
 
   if (window.innerHeight > window.innerWidth) {
-    const wrapRect = wrap.getBoundingClientRect();
-    const cellRect = todayHeader.getBoundingClientRect();
+    // スマホ縦では「中央」ではなく、
+    // 今日を左から2列目くらいに置く
+    const leftColWidth = 52;   // スマホ用CSSに合わせる
+    const dayColWidth = 68;    // スマホ用CSSに合わせる
 
-    const targetScroll =
-      wrap.scrollLeft +
-      (cellRect.left - wrapRect.left) -
-      (wrap.clientWidth / 2) +
-      (cellRect.width / 2);
+    // 今日の列の開始位置
+    const todayLeft = leftColWidth + (todayIndexInWeek * dayColWidth);
+
+    // 今日を左から2列目あたりに見せる
+    const targetScroll = todayLeft - dayColWidth;
 
     wrap.scrollLeft = Math.max(0, targetScroll);
   } else {
