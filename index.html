@@ -129,6 +129,11 @@ th, td {
     font-size: 13px;
   }
 }
+  .time-col {
+  white-space: pre-line;
+  font-size: 12px;
+  line-height: 1.2;
+}
 </style>
 </head>
 
@@ -142,13 +147,13 @@ th, td {
 const days = ["月","火","水","木","金","土"];
 
 const rows = [
-  { type: "class", time: "8:30",  key: 0 },
-  { type: "class", time: "10:30", key: 1 },
-  { type: "class", time: "12:50", key: 2 },
+  { type: "class", time: "1限\n8:30",  key: 0 },
+  { type: "class", time: "2限\n10:30", key: 1 },
+  { type: "class", time: "3限\n12:50", key: 2 },
   { type: "lunch", time: "昼休み", label: "12:50〜14:30" },
-  { type: "class", time: "16:10", key: 3 },
-  { type: "class", time: "17:50", key: 4 },
-  { type: "class", time: "19:30", key: 5 }
+  { type: "class", time: "4限\n16:10", key: 3 },
+  { type: "class", time: "5限\n17:50", key: 4 },
+  { type: "class", time: "6限\n19:30", key: 5 }
 ];
 
 const timetable = {
