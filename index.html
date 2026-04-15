@@ -9,15 +9,16 @@
 :root {
   --bg-1: #eef7ee;
   --bg-2: #dfeedd;
-  --card: rgba(255,255,255,0.74);
+  --card: rgba(255,255,255,0.78);
   --line: #d4e4d0;
-  --text: #2f4330;
+  --text: #243224;
 
   --forest-1: #6ea56d;
   --forest-2: #4f7f51;
   --forest-3: #355d39;
 
   --today: #e2f3dc;
+  --today-soft: #f4fbf1;
   --now: #5f8f57;
   --now-text: #ffffff;
 
@@ -33,6 +34,7 @@
   --pill-shadow: 0 4px 10px rgba(53, 94, 59, 0.08);
 
   --shadow-lg: 0 16px 40px rgba(43, 75, 47, 0.16);
+  --sticky-shadow: 6px 0 10px rgba(53, 94, 59, 0.06);
 }
 
 * {
@@ -85,6 +87,7 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 18px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.14);
 }
 
 .hero-title {
@@ -96,7 +99,8 @@ body {
 .hero-sub {
   margin-top: 6px;
   font-size: 12px;
-  opacity: 0.9;
+  opacity: 0.98;
+  font-weight: 500;
 }
 
 .table-wrap {
@@ -136,7 +140,7 @@ th, td {
   padding: 0;
   border-right: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
-  background: rgba(255,255,255,0.86);
+  background: rgba(255,255,255,0.88);
   white-space: nowrap;
   font-size: 14px;
 }
@@ -153,6 +157,7 @@ th, td {
   z-index: 4;
   color: var(--forest-3);
   font-weight: 700;
+  box-shadow: var(--sticky-shadow);
 }
 
 .corner {
@@ -163,8 +168,9 @@ th, td {
 
 .time-col {
   white-space: pre-line;
-  line-height: 1.15;
+  line-height: 1.2;
   border-left: 1px solid var(--line);
+  font-size: 13px;
 }
 
 .day-head {
@@ -174,6 +180,7 @@ th, td {
   z-index: 3;
   font-weight: 700;
   color: var(--forest-3);
+  box-shadow: inset 0 -1px 0 rgba(53, 94, 59, 0.08);
 }
 
 /* タイトル行 */
@@ -199,6 +206,7 @@ th, td {
 /* 通常セルの中身をカプセル化 */
 .class-cell {
   padding: 6px;
+  background: rgba(255,255,255,0.84);
 }
 
 .lesson-pill {
@@ -212,14 +220,16 @@ th, td {
   align-items: center;
   justify-content: center;
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.25;
   width: calc(100% - 8px);
   margin: 0 auto;
+  color: #304130;
 }
 
 /* 今日の列のカプセル */
 .today .lesson-pill {
-  background: #f7fff4;
+  background: var(--today-soft);
+  border-color: #cfe4c8;
 }
 
 /* 今の授業 */
@@ -238,12 +248,14 @@ th, td {
 /* 昼休み */
 .lunch-time {
   z-index: 4;
+  font-size: 13px;
 }
 
 .lunch-main {
   background: var(--lunch-main);
   font-weight: 700;
   color: #586437;
+  letter-spacing: 0.02em;
 }
 
 .lunch-merge {
@@ -336,6 +348,7 @@ table tr th:first-of-type {
     padding: 2px 3px;
     font-size: 8px;
     width: calc(100% - 2px);
+    line-height: 1.15;
   }
 }
 </style>
