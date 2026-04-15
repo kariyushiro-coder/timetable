@@ -301,7 +301,7 @@ table tr th:first-of-type {
   }
 
   th, td {
-    width: 60px;
+    width: 56px;
     height: 40px;
     font-size: 9px;
   }
@@ -309,8 +309,8 @@ table tr th:first-of-type {
   .corner,
   .time-col,
   .lunch-time {
-    width: 44px;
-    min-width: 44px;
+    width: 42px;
+    min-width: 42px;
     font-size: 9px;
   }
 
@@ -351,7 +351,7 @@ table tr th:first-of-type {
         <div class="hero-badge">🌿</div>
         <div class="hero-title">2026年度 前期時間割</div>
       </div>
-      <div class="hero-sub">宇根　花美</div>
+      <div class="hero-sub">宇根 花美</div>
     </div>
 
     <div class="table-wrap wrap">
@@ -522,23 +522,17 @@ rows.forEach(row => {
   table.appendChild(tr);
 });
 
-/* 縦表示：今日を左から2列目くらいに置く */
+/* 縦表示：今日を左寄りに配置 */
 function positionPortrait() {
   const wrap = document.querySelector(".wrap");
-  const headers = document.querySelectorAll(".day-head");
-  const todayHeader = headers[todayIndexInWeek];
-  if (!wrap || !todayHeader) return;
+  if (!wrap) return;
 
   if (window.innerHeight > window.innerWidth) {
-    const wrapRect = wrap.getBoundingClientRect();
-    const cellRect = todayHeader.getBoundingClientRect();
+    const leftColWidth = 42;
+    const dayColWidth = 56;
+    const todayLeft = leftColWidth + (todayIndexInWeek * dayColWidth);
 
-    const targetScroll =
-      wrap.scrollLeft +
-      (cellRect.left - wrapRect.left) -
-      cellRect.width;
-
-    wrap.scrollLeft = Math.max(0, targetScroll);
+    wrap.scrollLeft = Math.max(0, todayLeft - 10);
   }
 }
 
