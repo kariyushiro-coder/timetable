@@ -124,6 +124,7 @@ table {
   table-layout: fixed;
   min-width: 820px;
   background: transparent;
+  transform-origin: top left;
 }
 
 th, td {
@@ -291,41 +292,41 @@ table tr th:first-of-type {
   }
 
   th, td {
-    width: 78px;   /* ← ここを絞って4曜日くらい見えるように */
-    height: 46px;
-    font-size: 11px;
+    width: 68px;
+    height: 44px;
+    font-size: 10px;
   }
 
   .corner,
   .time-col,
   .lunch-time {
-    width: 56px;
-    min-width: 56px;
-    font-size: 11px;
+    width: 52px;
+    min-width: 52px;
+    font-size: 10px;
   }
 
   .day-head {
-    top: 46px;
-    font-size: 12px;
+    top: 44px;
+    font-size: 11px;
   }
 
   .title-row th {
-    height: 46px;
+    height: 44px;
   }
 
   .title-main {
-    font-size: 14px;
+    font-size: 13px;
   }
 
   .class-cell {
-    padding: 4px;
+    padding: 3px;
   }
 
   .lesson-pill {
-    min-height: 28px;
-    padding: 4px 6px;
-    font-size: 10px;
-    width: calc(100% - 6px);
+    min-height: 24px;
+    padding: 3px 5px;
+    font-size: 9px;
+    width: calc(100% - 4px);
   }
 }
 </style>
@@ -512,13 +513,15 @@ rows.forEach(row => {
   table.appendChild(tr);
 });
 
-/* 今日の列を最初から中央付近に表示 */
-window.addEventListener("load", () => {
+/* 縦表示：今日の列を最初から中央付近に表示
+   横表示：中央スクロールしない */
+function centerTodayIfPortrait() {
   const wrap = document.querySelector(".wrap");
   const headers = document.querySelectorAll(".day-head");
   const todayHeader = headers[todayIndexInWeek];
+  if (!wrap || !todayHeader) return;
 
-  if (wrap && todayHeader) {
+  if (window.innerHeight > window.innerWidth) {
     const wrapRect = wrap.getBoundingClientRect();
     const cellRect = todayHeader.getBoundingClientRect();
 
@@ -529,8 +532,41 @@ window.addEventListener("load", () => {
       (cellRect.width / 2);
 
     wrap.scrollLeft = Math.max(0, targetScroll);
+  } else {
+    wrap.scrollLeft = 0;
   }
-});
+}
+
+/* 横表示：全体が入るように縮小 */
+function fitLandscape() {
+  const wrap = document.querySelector(".wrap");
+  const table = document.getElementById("timetable");
+  if (!wrap || !table) return;
+
+  table.style.transform = "none";
+  table.style.transformOrigin = "top left";
+
+  // 縦なら縮小しない
+  if (window.innerHeight > window.innerWidth) return;
+
+  const availableWidth = wrap.clientWidth;
+  const fullWidth = table.scrollWidth;
+
+  let scale = availableWidth / fullWidth;
+  if (scale > 1) scale = 1;
+  if (scale < 0.72) scale = 0.72;
+
+  table.style.transform = "scale(" + scale + ")";
+}
+
+function applyLayout() {
+  fitLandscape();
+  centerTodayIfPortrait();
+}
+
+window.addEventListener("load", applyLayout);
+window.addEventListener("resize", applyLayout);
+window.addEventListener("orientationchange", applyLayout);
 </script>
 
 </body>
