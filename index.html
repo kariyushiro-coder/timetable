@@ -272,63 +272,72 @@ table tr th:first-of-type {
   border-left: 1px solid var(--line);
 }
 
-/* スマホ：4曜日くらい見える設定 */
+/* スマホ調整 */
 @media screen and (max-width: 600px) {
   .app {
-    margin: 6px auto;
-    padding: 6px;
+    margin: 4px auto;
+    padding: 4px;
+  }
+
+  .app-shell {
+    border-radius: 16px;
   }
 
   .hero {
-    padding: 12px 12px 10px;
+    padding: 10px 10px 8px;
   }
 
   .hero-title {
-    font-size: 16px;
+    font-size: 15px;
   }
 
   .hero-sub {
     font-size: 10px;
   }
 
+  .table-wrap {
+    padding: 6px;
+  }
+
   th, td {
-    width: 64px;      /* ← 68 から 64 に変更 */
-    height: 42px;
+    width: 60px;
+    height: 40px;
     font-size: 9px;
   }
 
   .corner,
   .time-col,
   .lunch-time {
-    width: 48px;      /* ← 52 から 48 に変更 */
-    min-width: 48px;
+    width: 44px;
+    min-width: 44px;
     font-size: 9px;
   }
 
   .day-head {
-    top: 42px;
+    top: 40px;
     font-size: 10px;
   }
 
   .title-row th {
-    height: 42px;
+    height: 40px;
   }
 
   .title-main {
-    font-size: 12px;
+    font-size: 11px;
   }
 
   .class-cell {
-    padding: 2px;
+    padding: 1px;
   }
 
   .lesson-pill {
-    min-height: 22px;
-    padding: 2px 4px;
+    min-height: 20px;
+    padding: 2px 3px;
     font-size: 8px;
-    width: calc(100% - 4px);
+    width: calc(100% - 2px);
   }
-}</style>
+}
+</style>
 </head>
 
 <body>
@@ -512,23 +521,22 @@ rows.forEach(row => {
   table.appendChild(tr);
 });
 
-/* 縦表示：今日の列を最初から中央付近に表示
-   横表示：中央スクロールしない */
+/* 縦表示：今日を左から2列目くらいに置く
+   横表示：左から表示 */
 function centerTodayIfPortrait() {
   const wrap = document.querySelector(".wrap");
-  if (!wrap) return;
+  const headers = document.querySelectorAll(".day-head");
+  const todayHeader = headers[todayIndexInWeek];
+  if (!wrap || !todayHeader) return;
 
   if (window.innerHeight > window.innerWidth) {
-    // スマホ縦では「中央」ではなく、
-    // 今日を左から2列目くらいに置く
-    const leftColWidth = 52;   // スマホ用CSSに合わせる
-    const dayColWidth = 68;    // スマホ用CSSに合わせる
+    const wrapRect = wrap.getBoundingClientRect();
+    const cellRect = todayHeader.getBoundingClientRect();
 
-    // 今日の列の開始位置
-    const todayLeft = leftColWidth + (todayIndexInWeek * dayColWidth);
-
-    // 今日を左から2列目あたりに見せる
-    const targetScroll = todayLeft - dayColWidth;
+    const targetScroll =
+      wrap.scrollLeft +
+      (cellRect.left - wrapRect.left) -
+      cellRect.width;
 
     wrap.scrollLeft = Math.max(0, targetScroll);
   } else {
@@ -545,7 +553,6 @@ function fitLandscape() {
   table.style.transform = "none";
   table.style.transformOrigin = "top left";
 
-  // 縦なら縮小しない
   if (window.innerHeight > window.innerWidth) return;
 
   const availableWidth = wrap.clientWidth;
@@ -558,14 +565,25 @@ function fitLandscape() {
   table.style.transform = "scale(" + scale + ")";
 }
 
+/* Safari対策込み */
 function applyLayout() {
   fitLandscape();
-  centerTodayIfPortrait();
+
+  requestAnimationFrame(() => {
+    centerTodayIfPortrait();
+
+    setTimeout(() => {
+      fitLandscape();
+      centerTodayIfPortrait();
+    }, 120);
+  });
 }
 
 window.addEventListener("load", applyLayout);
 window.addEventListener("resize", applyLayout);
-window.addEventListener("orientationchange", applyLayout);
+window.addEventListener("orientationchange", () => {
+  setTimeout(applyLayout, 120);
+});
 </script>
 
 </body>
