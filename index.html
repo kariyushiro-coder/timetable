@@ -102,8 +102,9 @@ body {
 .table-wrap {
   padding: 12px;
   overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: visible;
   scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
 .table-wrap::-webkit-scrollbar {
@@ -521,9 +522,8 @@ rows.forEach(row => {
   table.appendChild(tr);
 });
 
-/* 縦表示：今日を左から2列目くらいに置く
-   横表示：左から表示 */
-function centerTodayIfPortrait() {
+/* 縦表示：今日を左から2列目くらいに置く */
+function positionPortrait() {
   const wrap = document.querySelector(".wrap");
   const headers = document.querySelectorAll(".day-head");
   const todayHeader = headers[todayIndexInWeek];
@@ -539,12 +539,10 @@ function centerTodayIfPortrait() {
       cellRect.width;
 
     wrap.scrollLeft = Math.max(0, targetScroll);
-  } else {
-    wrap.scrollLeft = 0;
   }
 }
 
-/* 横表示：全体が入るように縮小 */
+/* 横表示：高さも含めて全体が入るように縮小 */
 function fitLandscape() {
   const wrap = document.querySelector(".wrap");
   const table = document.getElementById("timetable");
@@ -555,14 +553,22 @@ function fitLandscape() {
 
   if (window.innerHeight > window.innerWidth) return;
 
-  const availableWidth = wrap.clientWidth;
   const fullWidth = table.scrollWidth;
+  const fullHeight = table.scrollHeight;
 
-  let scale = availableWidth / fullWidth;
+  const availableWidth = wrap.clientWidth;
+  const availableHeight = window.innerHeight - 10;
+
+  const scaleX = availableWidth / fullWidth;
+  const scaleY = availableHeight / fullHeight;
+
+  let scale = Math.min(scaleX, scaleY);
+
   if (scale > 1) scale = 1;
-  if (scale < 0.72) scale = 0.72;
+  if (scale < 0.65) scale = 0.65;
 
   table.style.transform = "scale(" + scale + ")";
+  wrap.scrollLeft = 0;
 }
 
 /* Safari対策込み */
@@ -570,11 +576,9 @@ function applyLayout() {
   fitLandscape();
 
   requestAnimationFrame(() => {
-    centerTodayIfPortrait();
-
     setTimeout(() => {
       fitLandscape();
-      centerTodayIfPortrait();
+      positionPortrait();
     }, 120);
   });
 }
