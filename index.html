@@ -648,6 +648,40 @@ document.addEventListener("visibilitychange", () => {
     setTimeout(applyLayout, 120);
   }
 });
+  function updateNowClass() {
+  const newNowIndex = getCurrentClassIndex();
+
+  document.querySelectorAll(".class-cell").forEach(td => {
+    td.classList.remove("now-morning","now-day","now-evening","now-night");
+  });
+
+  if (newNowIndex === -1) return;
+
+  const rows = document.querySelectorAll("tr");
+
+  rows.forEach((tr, rowIndex) => {
+    const cells = tr.querySelectorAll("td");
+
+    cells.forEach((td, colIndex) => {
+      if (colIndex === todayIndexInWeek && rowIndex === newNowIndex + 2) {
+
+        if (newNowIndex <= 1) td.classList.add("now-morning");
+        else if (newNowIndex <= 3) td.classList.add("now-day");
+        else if (newNowIndex <= 5) td.classList.add("now-evening");
+        else td.classList.add("now-night");
+
+      }
+    });
+  });
+}
+
+// 1分ごとに更新
+setInterval(updateNowClass, 60000);
+  document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) {
+    updateNowClass();
+  }
+});
 </script>
 <script>
 if ("serviceWorker" in navigator) {
