@@ -380,8 +380,8 @@ const days = ["月","火","水","木","金","土"];
 const rows = [
   { type: "class", time: "1限\n8:50",  key: 0 },
   { type: "class", time: "2限\n10:30", key: 1 },
-  { type: "class", time: "3限\n12:50", key: 2 },
   { type: "lunch", time: "昼休み", label: "12:00〜12:50" },
+  { type: "class", time: "3限\n12:50", key: 2 },
   { type: "class", time: "4限\n16:10", key: 3 },
   { type: "class", time: "5限\n17:50", key: 4 },
   { type: "class", time: "6限\n19:30", key: 5 }
@@ -406,12 +406,12 @@ function getCurrentClassIndex() {
   const minutes = now.getHours() * 60 + now.getMinutes();
 
   const ranges = [
-    [8 * 60 + 30, 10 * 60 + 29],
-    [10 * 60 + 30, 12 * 60 + 29],
-    [12 * 60 + 50, 14 * 60 + 29],
-    [16 * 60 + 10, 17 * 60 + 49],
-    [17 * 60 + 50, 19 * 60 + 29],
-    [19 * 60 + 30, 21 * 60 + 0]
+    [8 * 60 + 50, 10 * 60 + 29],  // 1限
+    [10 * 60 + 30, 11 * 60 + 59], // 2限
+    [12 * 60 + 50, 14 * 60 + 29], // 3限
+    [16 * 60 + 10, 17 * 60 + 49], // 4限
+    [17 * 60 + 50, 19 * 60 + 29], // 5限
+    [19 * 60 + 30, 21 * 60 + 0]   // 6限
   ];
 
   for (let i = 0; i < ranges.length; i++) {
