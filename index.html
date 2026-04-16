@@ -572,12 +572,17 @@ function positionPortrait() {
   const wrap = document.querySelector(".wrap");
   if (!wrap) return;
 
+  // スマホ縦のときだけ
   if (window.innerHeight > window.innerWidth) {
-    const leftColWidth = 42;
-    const dayColWidth = 56;
-    const todayLeft = leftColWidth + (todayIndexInWeek * dayColWidth);
 
-    wrap.scrollLeft = Math.max(0, todayLeft - 10);
+    const leftColWidth = 42;  // 開始時刻列
+    const dayColWidth = 56;   // 曜日列
+
+    // 「開始時刻の隣」に持ってくる
+    const target =
+      leftColWidth + (todayIndexInWeek * dayColWidth) - leftColWidth;
+
+    wrap.scrollLeft = Math.max(0, target);
   }
 }
 
