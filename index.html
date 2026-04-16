@@ -46,6 +46,9 @@
 }
 
 body {
+  margin: 0;
+  font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+  color: var(--text);
   background:
     radial-gradient(circle at 20% 20%, rgba(255,255,255,0.3), transparent 20%),
     radial-gradient(circle at 80% 30%, rgba(255,255,255,0.2), transparent 20%),
@@ -154,19 +157,6 @@ th, td {
 }
 
 /* 左端 */
-.corner,
-.time-col,
-.lunch-time {
-  width: 92px;
-  min-width: 92px;
-  background: linear-gradient(180deg, #f3fbef 0%, #e5f3df 100%);
-  position: sticky;
-  left: 0;
-  z-index: 4;
-  color: var(--forest-3);
-  font-weight: 700;
-  box-shadow: var(--sticky-shadow);
-}
 
 .corner {
   z-index: 6;
@@ -179,16 +169,6 @@ th, td {
   line-height: 1.2;
   border-left: 1px solid var(--line);
   font-size: 13px;
-}
-
-.day-head {
-  background: var(--head-bg);
-  position: sticky;
-  top: 54px;
-  z-index: 3;
-  font-weight: 700;
-  color: var(--forest-3);
-  box-shadow: inset 0 -1px 0 rgba(53, 94, 59, 0.08);
 }
 
 /* タイトル行 */
@@ -424,14 +404,29 @@ table tr th:first-of-type {
 }
   .day-head {
   background: linear-gradient(180deg, #ffffff, #e8ffe8);
-  border-bottom: 2px solid #9fe29f;
+  position: sticky;
+  top: 54px;
+  z-index: 3;
   font-weight: 900;
+  color: #355d39;
+  box-shadow:
+    inset 0 -1px 0 rgba(53, 94, 59, 0.08),
+    inset 0 1px 0 rgba(255,255,255,0.7);
+  border-bottom: 2px solid #9fe29f;
   letter-spacing: 0.05em;
 }
 
-.corner,
+  .corner,
 .time-col,
 .lunch-time {
+  width: 92px;
+  min-width: 92px;
+  position: sticky;
+  left: 0;
+  z-index: 4;
+  color: var(--forest-3);
+  font-weight: 700;
+  box-shadow: var(--sticky-shadow);
   background: linear-gradient(180deg, #eef8eb 0%, #e2f0de 100%);
 }
 </style>
