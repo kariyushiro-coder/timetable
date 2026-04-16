@@ -574,15 +574,15 @@ function positionPortrait() {
   const wrap = document.querySelector(".wrap");
   if (!wrap) return;
 
-  // スマホ縦のときだけ
   if (window.innerHeight > window.innerWidth) {
 
-    const leftColWidth = 42;  // 開始時刻列
-    const dayColWidth = 56;   // 曜日列
+    const dayColWidth = 56;
 
-    // 「開始時刻の隣」に持ってくる
-    const target =
-      leftColWidth + (todayIndexInWeek * dayColWidth) - leftColWidth;
+    // 今日列の現在位置
+    const currentPosition = todayIndexInWeek * dayColWidth;
+
+    // 「2列目」にするために1列分戻す
+    const target = currentPosition - dayColWidth;
 
     wrap.scrollLeft = Math.max(0, target);
   }
