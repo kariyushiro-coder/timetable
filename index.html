@@ -353,6 +353,31 @@ table tr th:first-of-type {
     line-height: 1.15;
   }
 }
+  /* ===== 時間帯別 今の授業 ===== */
+
+/* 午前（1-2限） */
+.now-morning .lesson-pill {
+  background: #81c784;
+  color: #fff;
+}
+
+/* 昼（3-4限） */
+.now-day .lesson-pill {
+  background: #ffd54f;
+  color: #5d4037;
+}
+
+/* 夕方（5-6限） */
+.now-evening .lesson-pill {
+  background: #ff8a65;
+  color: #fff;
+}
+
+/* 夜（7限） */
+.now-night .lesson-pill {
+  background: #3949ab;
+  color: #fff;
+}
 </style>
 </head>
 
@@ -524,8 +549,18 @@ rows.forEach(row => {
 
     if (day === today) td.classList.add("today");
     if (day === today && row.type === "class" && row.key === nowIndex) {
-      td.classList.add("now");
-    }
+
+  if (nowIndex <= 1) {
+    td.classList.add("now-morning");   // 1-2限
+  } else if (nowIndex <= 3) {
+    td.classList.add("now-day");       // 3-4限
+  } else if (nowIndex <= 5) {
+    td.classList.add("now-evening");   // 5-6限
+  } else {
+    td.classList.add("now-night");     // 7限
+  }
+
+}
 
     const text = timetable[day][row.key] || "";
     if (text) {
