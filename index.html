@@ -62,17 +62,24 @@ body {
 }
 
 .app-shell {
-  background: var(--card);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.5);
-  border-radius: 24px;
-  box-shadow: var(--shadow-lg);
+  background: rgba(255,255,255,0.74);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.6);
+  border-radius: 34px;
+  box-shadow:
+    0 20px 45px rgba(43, 75, 47, 0.12),
+    0 8px 18px rgba(110,165,109,0.10),
+    inset 0 1px 0 rgba(255,255,255,0.55);
   overflow: hidden;
 }
 
 .hero {
-  padding: 18px 18px 14px;
-  background: linear-gradient(135deg, rgba(110,165,109,0.95) 0%, rgba(79,127,81,0.95) 100%);
+  padding: 20px 20px 16px;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255,255,255,0.22), transparent 20%),
+    radial-gradient(circle at 85% 25%, rgba(255,255,255,0.18), transparent 18%),
+    radial-gradient(circle at 60% 80%, rgba(255,255,255,0.10), transparent 16%),
+    linear-gradient(135deg, #83c784 0%, #67ad69 45%, #4f8e56 100%);
   color: #fff;
 }
 
@@ -95,16 +102,16 @@ body {
 }
 
 .hero-title {
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
 }
 
 .hero-sub {
   margin-top: 6px;
   font-size: 12px;
   opacity: 0.98;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .table-wrap {
@@ -155,7 +162,7 @@ th, td {
 .lunch-time {
   width: 92px;
   min-width: 92px;
-  background: var(--time-bg);
+  background: linear-gradient(180deg, #f3fbef 0%, #e5f3df 100%);
   position: sticky;
   left: 0;
   z-index: 4;
@@ -215,19 +222,21 @@ th, td {
 
 .lesson-pill {
   min-height: 34px;
-  padding: 6px 8px;
+  padding: 6px 10px;
   border-radius: 999px;
-  background: var(--pill-bg);
-  border: 1px solid var(--pill-line);
-  box-shadow: var(--pill-shadow);
+  background: linear-gradient(180deg, #ffffff 0%, #f7fbf5 100%);
+  border: 1px solid #d9ead4;
+  box-shadow:
+    0 6px 14px rgba(53, 94, 59, 0.10),
+    inset 0 1px 0 rgba(255,255,255,0.95);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
-  line-height: 1.25;
+  font-weight: 700;
+  line-height: 1.2;
   width: calc(100% - 8px);
   margin: 0 auto;
-  color: #304130;
+  color: #355238;
 }
 
 /* 今日の列のカプセル */
@@ -243,10 +252,10 @@ th, td {
 }
 
 .lunch-main {
-  background: var(--lunch-main);
-  font-weight: 700;
-  color: #586437;
-  letter-spacing: 0.02em;
+  background: linear-gradient(180deg, #fff8c9 0%, #ffeeb0 100%);
+  font-weight: 800;
+  color: #786318;
+  letter-spacing: 0.03em;
 }
 
 .lunch-merge {
@@ -317,10 +326,22 @@ table tr th:first-of-type {
     font-size: 9px;
   }
 
-  .day-head {
-    top: 40px;
-    font-size: 10px;
-  }
+ .day-head {
+  background: linear-gradient(180deg, #fbfff9 0%, #eef8ea 100%);
+  position: sticky;
+  top: 54px;
+  z-index: 3;
+  font-weight: 800;
+  color: #355d39;
+  box-shadow:
+    inset 0 -1px 0 rgba(53, 94, 59, 0.08),
+    inset 0 1px 0 rgba(255,255,255,0.7);
+  letter-spacing: 0.02em;
+}
+  .day-head.today {
+  background: linear-gradient(180deg, #fff7c9 0%, #ffe79a 100%) !important;
+  color: #5a4a12;
+}
 
   .title-row th {
     height: 40px;
@@ -367,17 +388,19 @@ table tr th:first-of-type {
   background: #3949ab;
   color: #fff;
 }
-  .now-morning .lesson-pill,
+ .now-morning .lesson-pill,
 .now-day .lesson-pill,
 .now-evening .lesson-pill,
 .now-night .lesson-pill {
-  animation: popNow 1.8s ease-in-out infinite;
+  animation: popNow 1.6s ease-in-out infinite;
 }
 
 @keyframes popNow {
-  0%   { transform: scale(1); }
-  50%  { transform: scale(1.06); }
-  100% { transform: scale(1); }
+  0%   { transform: translateY(0) scale(1); }
+  25%  { transform: translateY(-1px) scale(1.03); }
+  50%  { transform: translateY(-2px) scale(1.06); }
+  75%  { transform: translateY(-1px) scale(1.03); }
+  100% { transform: translateY(0) scale(1); }
 }
   .day-head {
   background: #f6fcf4;
