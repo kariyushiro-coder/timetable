@@ -502,6 +502,9 @@ table.appendChild(headerTr);
 /* 本体 */
 rows.forEach(row => {
   const tr = document.createElement("tr");
+if (row.type === "class") {
+  tr.dataset.key = row.key;
+}
 
   if (row.type === "lunch") {
     const th = document.createElement("th");
@@ -640,46 +643,61 @@ window.addEventListener("orientationchange", () => {
   setTimeout(applyLayout, 120);
 });
   window.addEventListener("pageshow", () => {
-  setTimeout(applyLayout, 120);
+  setTimeout(() => {
+    applyLayout();
+    updateNowClass();
+  }, 120);
 });
 
-document.addEventListener("visibilitychange", () => {
-  if (!document.hidden) {
-    setTimeout(applyLayout, 120);
-  }
-});
   function updateNowClass() {
   const newNowIndex = getCurrentClassIndex();
 
+  // いったん今の授業色を全部外す
   document.querySelectorAll(".class-cell").forEach(td => {
-    td.classList.remove("now-morning","now-day","now-evening","now-night");
+    td.classList.remove("now-morning", "now-day", "now-evening", "now-night");
   });
 
+  // 授業時間外ならここで終了
   if (newNowIndex === -1) return;
 
-  const rows = document.querySelectorAll("tr");
+  // row.key と一致する授業行を探す
+  const targetRow = document.querySelector(`tr[data-key="${newNowIndex}"]`);
+  if (!targetRow) return;
 
-  rows.forEach((tr, rowIndex) => {
-    const cells = tr.querySelectorAll("td");
+  // その行の class-cell から、今日の曜日列を選ぶ
+  const cells = targetRow.querySelectorAll(".class-cell");
+  const targetCell = cells[todayIndexInWeek];
+  if (!targetCell) return;
 
-    cells.forEach((td, colIndex) => {
-      if (colIndex === todayIndexInWeek && rowIndex === newNowIndex + 2) {
+  // 時間帯で色分け
+  if (newNowIndex <= 1) {
+    targetCell.classList.add("now-morning");
+  } else if (newNowIndex <= 3) {
+    targetCell.classList.add("now-day");
+  } else if (newNowIndex <= 5) {
+    targetCell.classList.add("now-evening");
+  } else {
+    targetCell.classList.add("now-night");
+  }
 
-        if (newNowIndex <= 1) td.classList.add("now-morning");
-        else if (newNowIndex <= 3) td.classList.add("now-day");
-        else if (newNowIndex <= 5) td.classList.add("now-evening");
-        else td.classList.add("now-night");
-
-      }
-    });
-  });
+  // 空欄でも今の授業なら pill を出す
+  if (!targetCell.querySelector(".lesson-pill")) {
+    const pill = document.createElement("div");
+    pill.className = "lesson-pill";
+    pill.textContent = "―";
+    targetCell.appendChild(pill);
+  }
 }
 
 // 1分ごとに更新
 setInterval(updateNowClass, 60000);
+  updateNowClass();
   document.addEventListener("visibilitychange", () => {
   if (!document.hidden) {
-    updateNowClass();
+    setTimeout(() => {
+      applyLayout();
+      updateNowClass();
+    }, 120);
   }
 });
 </script>
