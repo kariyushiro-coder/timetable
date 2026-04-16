@@ -234,14 +234,16 @@ th, td {
 
 /* 今の授業 */
 .now {
-  background: var(--today) !important;
+  background: #d8efd1 !important;
 }
 
 .now .lesson-pill {
   background: var(--now);
   color: var(--now-text);
   border-color: #4d7a48;
-  box-shadow: 0 6px 14px rgba(53, 94, 59, 0.24);
+  box-shadow:
+    0 6px 14px rgba(53, 94, 59, 0.24),
+    0 0 0 2px rgba(95,143,87,0.18);
   font-weight: 700;
 }
 
@@ -519,7 +521,9 @@ rows.forEach(row => {
     td.className = "class-cell";
 
     if (day === today) td.classList.add("today");
-    if (day === today && row.key === nowIndex) td.classList.add("now");
+    if (day === today && row.type === "class" && row.key === nowIndex) {
+      td.classList.add("now");
+    }
 
     const text = timetable[day][row.key] || "";
     if (text) {
