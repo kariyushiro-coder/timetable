@@ -367,6 +367,31 @@ table tr th:first-of-type {
   background: #3949ab;
   color: #fff;
 }
+  .now-morning .lesson-pill,
+.now-day .lesson-pill,
+.now-evening .lesson-pill,
+.now-night .lesson-pill {
+  animation: popNow 1.8s ease-in-out infinite;
+}
+
+@keyframes popNow {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+  .day-head {
+  background: #f6fcf4;
+  color: #355d39;
+  font-weight: 800;
+  border-bottom: 1px solid #d7e8d1;
+  letter-spacing: 0.04em;
+}
+
+.corner,
+.time-col,
+.lunch-time {
+  background: linear-gradient(180deg, #eef8eb 0%, #e2f0de 100%);
+}
 </style>
 </head>
 
@@ -391,12 +416,12 @@ table tr th:first-of-type {
 </div>
 
 <script>
-const days = ["月","火","水","木","金","土"];
+const days = ["🌙月","🔥火","💧水","🌳木","⭐金","☀️土"];
 
 const rows = [
   { type: "class", time: "1限\n8:50",  key: 0 },
   { type: "class", time: "2限\n10:30", key: 1 },
-  { type: "lunch", time: "昼休み", label: "12:00〜12:50" },
+  { type: "lunch", time: "昼休み", label: "12:00〜12:50🍙" },
   { type: "class", time: "3限\n12:50", key: 2 },
   { type: "class", time: "4限\n14:30", key: 3 },
   { type: "class", time: "5限\n16:10", key: 4 },
