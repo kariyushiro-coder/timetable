@@ -639,6 +639,15 @@ window.addEventListener("resize", applyLayout);
 window.addEventListener("orientationchange", () => {
   setTimeout(applyLayout, 120);
 });
+  window.addEventListener("pageshow", () => {
+  setTimeout(applyLayout, 120);
+});
+
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) {
+    setTimeout(applyLayout, 120);
+  }
+});
 </script>
 <script>
 if ("serviceWorker" in navigator) {
