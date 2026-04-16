@@ -572,19 +572,20 @@ if (text || (day === today && row.type === "class" && row.key === nowIndex)) {
 /* 縦表示：今日を左寄りに配置 */
 function positionPortrait() {
   const wrap = document.querySelector(".wrap");
-  if (!wrap) return;
+  const headers = document.querySelectorAll(".day-head");
+
+  if (!wrap || headers.length === 0) return;
 
   if (window.innerHeight > window.innerWidth) {
 
-    const dayColWidth = 56;
+    const todayHeader = headers[todayIndexInWeek];
 
-    // 今日列の現在位置
-    const currentPosition = todayIndexInWeek * dayColWidth;
+    const left = todayHeader.offsetLeft;
 
-    // 「2列目」にするために1列分戻す
-    const target = currentPosition - dayColWidth;
+    // ← これが重要（固定列の幅）
+    const leftColWidth = document.querySelector(".time-col").offsetWidth;
 
-    wrap.scrollLeft = Math.max(0, target);
+    wrap.scrollLeft = Math.max(0, left - leftColWidth);
   }
 }
 
