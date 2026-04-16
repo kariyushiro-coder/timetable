@@ -46,13 +46,10 @@
 }
 
 body {
-  margin: 0;
-  font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
-  color: var(--text);
   background:
-    radial-gradient(circle at top left, rgba(126, 179, 118, 0.20), transparent 28%),
-    radial-gradient(circle at top right, rgba(95, 143, 87, 0.14), transparent 22%),
-    linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,0.3), transparent 20%),
+    radial-gradient(circle at 80% 30%, rgba(255,255,255,0.2), transparent 20%),
+    linear-gradient(180deg, #d4ffd4 0%, #b9f2b9 100%);
 }
 
 .app {
@@ -223,22 +220,30 @@ th, td {
 .lesson-pill {
   min-height: 34px;
   padding: 6px 10px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, #ffffff 0%, #f7fbf5 100%);
-  border: 1px solid #d9ead4;
+  border-radius: 14px;
+
+  background: linear-gradient(180deg, #ffffff 0%, #e8ffe8 100%);
+  border: 2px solid #9fe29f;
+
   box-shadow:
-    0 6px 14px rgba(53, 94, 59, 0.10),
-    inset 0 1px 0 rgba(255,255,255,0.95);
+    0 6px 0 #6fb96f,
+    0 10px 16px rgba(0,0,0,0.15);
+
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
-  line-height: 1.2;
-  width: calc(100% - 8px);
-  margin: 0 auto;
-  color: #355238;
-}
 
+  font-weight: 800;
+  color: #1f3b1f;
+
+  transition: all 0.15s ease;
+}
+.lesson-pill:active {
+  transform: translateY(4px);
+  box-shadow:
+    0 2px 0 #6fb96f,
+    0 4px 8px rgba(0,0,0,0.15);
+}
 /* 今日の列のカプセル */
 .today .lesson-pill {
   background: var(--today-soft);
@@ -339,8 +344,9 @@ table tr th:first-of-type {
   letter-spacing: 0.02em;
 }
   .day-head.today {
-  background: linear-gradient(180deg, #fff7c9 0%, #ffe79a 100%) !important;
-  color: #5a4a12;
+  background: linear-gradient(180deg, #fff176, #ffd54f) !important;
+  color: #5d4037;
+  transform: scale(1.05);
 }
 
   .title-row th {
@@ -365,49 +371,62 @@ table tr th:first-of-type {
 }
   /* ===== 時間帯別 今の授業 ===== */
 
-/* 午前（1-2限） */
+/* 午前 */
 .now-morning .lesson-pill {
-  background: #81c784;
+  background: linear-gradient(180deg, #81c784, #4caf50);
   color: #fff;
 }
 
-/* 昼（3-4限） */
+/* 昼 */
 .now-day .lesson-pill {
-  background: #ffd54f;
+  background: linear-gradient(180deg, #fff176, #ffd54f);
   color: #5d4037;
 }
 
-/* 夕方（5-6限） */
+/* 夕方 */
 .now-evening .lesson-pill {
-  background: #ff8a65;
+  background: linear-gradient(180deg, #ff8a65, #ff5722);
   color: #fff;
 }
 
-/* 夜（7限） */
+/* 夜 */
 .now-night .lesson-pill {
-  background: #3949ab;
+  background: linear-gradient(180deg, #5c6bc0, #283593);
   color: #fff;
 }
  .now-morning .lesson-pill,
 .now-day .lesson-pill,
 .now-evening .lesson-pill,
 .now-night .lesson-pill {
-  animation: popNow 1.6s ease-in-out infinite;
+  animation: gameNow 1s infinite;
+  border-color: #fff176;
 }
 
-@keyframes popNow {
-  0%   { transform: translateY(0) scale(1); }
-  25%  { transform: translateY(-1px) scale(1.03); }
-  50%  { transform: translateY(-2px) scale(1.06); }
-  75%  { transform: translateY(-1px) scale(1.03); }
-  100% { transform: translateY(0) scale(1); }
+@keyframes gameNow {
+  0% {
+    transform: scale(1);
+    box-shadow:
+      0 6px 0 #6fb96f,
+      0 0 0 rgba(255,255,0,0.0);
+  }
+  50% {
+    transform: scale(1.12);
+    box-shadow:
+      0 6px 0 #6fb96f,
+      0 0 18px rgba(255,255,120,0.9);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow:
+      0 6px 0 #6fb96f,
+      0 0 0 rgba(255,255,0,0.0);
+  }
 }
   .day-head {
-  background: #f6fcf4;
-  color: #355d39;
-  font-weight: 800;
-  border-bottom: 1px solid #d7e8d1;
-  letter-spacing: 0.04em;
+  background: linear-gradient(180deg, #ffffff, #e8ffe8);
+  border-bottom: 2px solid #9fe29f;
+  font-weight: 900;
+  letter-spacing: 0.05em;
 }
 
 .corner,
@@ -428,7 +447,7 @@ table tr th:first-of-type {
         <div class="hero-badge">🌿</div>
         <div class="hero-title">2026年度 前期時間割</div>
       </div>
-      <div class="hero-sub">休みの日でも昼間で寝るのは言語道断である</div>
+      <div class="hero-sub">休みの日でも昼まで寝るのは言語道断である</div>
     </div>
 
     <div class="table-wrap wrap">
