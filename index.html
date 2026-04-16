@@ -416,7 +416,7 @@ table tr th:first-of-type {
 </div>
 
 <script>
-const days = ["🌙月","🔥火","💧水","🌳木","⭐金","☀️土"];
+const days = ["月","火","水","木","金","土"];
 
 const rows = [
   { type: "class", time: "1限\n8:50",  key: 0 },
@@ -508,11 +508,20 @@ corner.className = "corner";
 corner.textContent = "";
 headerTr.appendChild(corner);
 
+const dayLabels = {
+  "月": "🌙月",
+  "火": "🔥火",
+  "水": "💧水",
+  "木": "🌳木",
+  "金": "⭐金",
+  "土": "☀️土"
+};
+
 days.forEach(day => {
   const th = document.createElement("th");
   th.className = "day-head";
   if (day === today) th.classList.add("today");
-  th.textContent = day;
+  th.textContent = dayLabels[day];
   headerTr.appendChild(th);
 });
 
