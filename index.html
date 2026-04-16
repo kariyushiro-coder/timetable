@@ -554,12 +554,14 @@ rows.forEach(row => {
 }
 
     const text = timetable[day][row.key] || "";
-    if (text) {
-      const pill = document.createElement("div");
-      pill.className = "lesson-pill";
-      pill.textContent = text;
-      td.appendChild(pill);
-    }
+
+// 空欄でも、今の授業なら pill を作る
+if (text || (day === today && row.type === "class" && row.key === nowIndex)) {
+  const pill = document.createElement("div");
+  pill.className = "lesson-pill";
+  pill.textContent = text || "―";
+  td.appendChild(pill);
+}
 
     tr.appendChild(td);
   });
