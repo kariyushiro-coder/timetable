@@ -368,12 +368,15 @@ table tr th:first-of-type {
   }
 
   .lesson-pill {
-    min-height: 20px;
-    padding: 2px 3px;
-    font-size: 8px;
-    width: calc(100% - 2px);
-    line-height: 1.15;
-  }
+  white-space: nowrap;
+  overflow: hidden;
+　text-overflow: ellipsis;
+  min-height: 20px;
+  padding: 2px 3px;
+  font-size: 8px;
+  width: calc(100% - 2px);
+  line-height: 1.15;
+}
 }
   /* ===== 時間帯別 今の授業 ===== */
 
@@ -625,7 +628,8 @@ if (row.type === "class") {
 
 }
 
-    const text = timetable[day][row.key] || "";
+const rawText = timetable[day][row.key] || "";
+const text = Array.from(rawText).slice(0, 8).join("");
 
 // 空欄でも、今の授業なら pill を作る
 if (text || (day === today && row.type === "class" && row.key === nowIndex)) {
