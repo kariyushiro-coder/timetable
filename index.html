@@ -439,6 +439,17 @@ table tr th:first-of-type {
   border-color: #fff176;
 }
 
+/* ★教職だけ完全上書き */
+.now-morning .lesson-pill.teaching,
+.now-day .lesson-pill.teaching,
+.now-evening .lesson-pill.teaching,
+.now-night .lesson-pill.teaching {
+  animation: none; /* ←これ追加（重要） */
+
+  box-shadow:
+    0 6px 0 #2196f3,
+    0 0 18px rgba(100,180,255,0.9);
+}
 @keyframes gameNow {
   0% {
     transform: scale(1);
@@ -536,6 +547,15 @@ table tr th:first-of-type {
   .modal-title {
     font-size: 16px;
   }
+}
+  .lesson-pill.teaching {
+  background: linear-gradient(180deg, #e3f2fd 0%, #90caf9 100%);
+  border-color: #42a5f5;
+  color: #0d47a1;
+
+  box-shadow:
+    0 6px 0 #2196f3,   /* ←青の土台 */
+    0 10px 16px rgba(0,0,0,0.15);
 }
 </style>
 </head>
@@ -761,12 +781,22 @@ rows.forEach(row => {
     }
 
     const rawText = timetable[day][row.key] || "";
+    const isTeachingCourse =
+      rawText.includes("教育課程論") ||
+      rawText.includes("総合的な学習の時間及び特別活動の理論と方法") ||
+      rawText.includes("教育の方法と技術") ||
+      rawText.includes("特別支援教育") ||
+      rawText.includes("ICT教育の理論と方法") ||
+      rawText.includes("教育と社会");
     const text = Array.from(rawText).slice(0, 8).join("");
 
     // 空欄でも、今の授業なら pill を作る
     if (text || (day === today && row.type === "class" && row.key === nowIndex)) {
       const pill = document.createElement("div");
       pill.className = "lesson-pill";
+    if (isTeachingCourse) {
+      pill.classList.add("teaching");
+    }
       pill.textContent = text || "―";
 
       // 授業があるときだけポップアップ有効
