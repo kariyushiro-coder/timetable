@@ -157,7 +157,6 @@ th, td {
 }
 
 /* 左端 */
-
 .corner {
   z-index: 6;
   white-space: pre-line;
@@ -218,12 +217,18 @@ th, td {
 
   transition: all 0.15s ease;
 }
+
 .lesson-pill:active {
   transform: translateY(4px);
   box-shadow:
     0 2px 0 #6fb96f,
     0 4px 8px rgba(0,0,0,0.15);
 }
+
+.lesson-pill.has-detail {
+  cursor: pointer;
+}
+
 /* 今日の列のカプセル */
 .today .lesson-pill {
   background: var(--today-soft);
@@ -269,6 +274,7 @@ table tr td:first-of-type,
 table tr th:first-of-type {
   border-left: 1px solid var(--line);
 }
+
 .day-head {
   background: linear-gradient(180deg, #ffffff, #e8ffe8);
   position: sticky;
@@ -283,7 +289,7 @@ table tr th:first-of-type {
   letter-spacing: 0.05em;
 }
 
-  .corner,
+.corner,
 .time-col,
 .lunch-time {
   width: 92px;
@@ -296,6 +302,7 @@ table tr th:first-of-type {
   box-shadow: var(--sticky-shadow);
   background: linear-gradient(180deg, #eef8eb 0%, #e2f0de 100%);
 }
+
 /* スマホ調整 */
 @media screen and (max-width: 600px) {
   .app {
@@ -337,23 +344,24 @@ table tr th:first-of-type {
     font-size: 9px;
   }
 
- .day-head {
-  background: linear-gradient(180deg, #fbfff9 0%, #eef8ea 100%);
-  position: sticky;
-  top: 40px;
-  z-index: 3;
-  font-weight: 800;
-  color: #355d39;
-  box-shadow:
-    inset 0 -1px 0 rgba(53, 94, 59, 0.08),
-    inset 0 1px 0 rgba(255,255,255,0.7);
-  letter-spacing: 0.02em;
-}
+  .day-head {
+    background: linear-gradient(180deg, #fbfff9 0%, #eef8ea 100%);
+    position: sticky;
+    top: 40px;
+    z-index: 3;
+    font-weight: 800;
+    color: #355d39;
+    box-shadow:
+      inset 0 -1px 0 rgba(53, 94, 59, 0.08),
+      inset 0 1px 0 rgba(255,255,255,0.7);
+    letter-spacing: 0.02em;
+  }
+
   .day-head.today {
-  background: linear-gradient(180deg, #fff176, #ffd54f) !important;
-  color: #5d4037;
-  transform: scale(1.05);
-}
+    background: linear-gradient(180deg, #fff176, #ffd54f) !important;
+    color: #5d4037;
+    transform: scale(1.05);
+  }
 
   .title-row th {
     height: 40px;
@@ -368,17 +376,18 @@ table tr th:first-of-type {
   }
 
   .lesson-pill {
-  white-space: nowrap;
-  overflow: hidden;
-　text-overflow: ellipsis;
-  min-height: 20px;
-  padding: 2px 3px;
-  font-size: 8px;
-  width: calc(100% - 2px);
-  line-height: 1.15;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 20px;
+    padding: 2px 3px;
+    font-size: 8px;
+    width: calc(100% - 2px);
+    line-height: 1.15;
+  }
 }
-}
-  /* ===== 時間帯別 今の授業 ===== */
+
+/* ===== 時間帯別 今の授業 ===== */
 
 /* 午前 */
 .now-morning .lesson-pill {
@@ -403,7 +412,8 @@ table tr th:first-of-type {
   background: linear-gradient(180deg, #5c6bc0, #283593);
   color: #fff;
 }
- .now-morning .lesson-pill,
+
+.now-morning .lesson-pill,
 .now-day .lesson-pill,
 .now-evening .lesson-pill,
 .now-night .lesson-pill {
@@ -431,7 +441,84 @@ table tr th:first-of-type {
       0 0 0 rgba(255,255,0,0.0);
   }
 }
-  
+
+/* ===== モーダル ===== */
+.modal.hidden {
+  display: none;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 30, 20, 0.45);
+  backdrop-filter: blur(4px);
+}
+
+.modal-box {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(88vw, 320px);
+  padding: 18px 16px 16px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, #ffffff 0%, #e8ffe8 100%);
+  border: 3px solid #9fe29f;
+  box-shadow:
+    0 10px 0 #6fb96f,
+    0 18px 28px rgba(0,0,0,0.18);
+  text-align: center;
+}
+
+.modal-label {
+  font-size: 12px;
+  font-weight: 800;
+  color: #4f7f51;
+  margin-bottom: 8px;
+  letter-spacing: 0.08em;
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: 900;
+  color: #1f3b1f;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.modal-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #355d39;
+  font-size: 20px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+}
+
+@media screen and (max-width: 600px) {
+  .modal-box {
+    width: min(90vw, 300px);
+    padding: 16px 14px 14px;
+    border-radius: 18px;
+  }
+
+  .modal-title {
+    font-size: 16px;
+  }
+}
 </style>
 </head>
 
@@ -455,6 +542,15 @@ table tr th:first-of-type {
   </div>
 </div>
 
+<div id="lessonModal" class="modal hidden">
+  <div class="modal-backdrop"></div>
+  <div class="modal-box">
+    <button id="modalClose" class="modal-close" aria-label="閉じる">×</button>
+    <div class="modal-label">授業詳細</div>
+    <div id="modalTitle" class="modal-title"></div>
+  </div>
+</div>
+
 <script>
 const days = ["月","火","水","木","金","土"];
 
@@ -466,16 +562,16 @@ const rows = [
   { type: "class", time: "4限\n14:30", key: 3 },
   { type: "class", time: "5限\n16:10", key: 4 },
   { type: "class", time: "6限\n17:50", key: 5 },
-  { type: "class", time: "7限\n19:30", key: 6 }  // ←追加
+  { type: "class", time: "7限\n19:30", key: 6 }
 ];
 
 const timetable = {
-"月": ["教育課程論", "", "", "日本時代史Ⅶ", "総合的な学習の時間及び特別活動の理論と方法", "", ""],
-"火": ["教育の方法と技術", "西洋史概論Ⅰ", "外書購読Ⅰ", "", "", "東洋史概論Ⅰ", ""],
-"水": ["", "地理歴史科教育法Ⅰ", "人文地理学", "", "", "", ""],
-"木": ["特別支援教育", "地誌学", "史学展開演習Ⅰ", "", "", "日本時代史Ⅰ・", "ICT教育の理論と方法"],
-"金": ["", "", "", "", "", "", ""],
-"土": ["教育と社会", "", "", "", "", "", ""]
+  "月": ["教育課程論", "", "", "日本時代史Ⅶ", "総合的な学習の時間及び特別活動の理論と方法", "", ""],
+  "火": ["教育の方法と技術", "西洋史概論Ⅰ", "外書購読Ⅰ", "", "", "東洋史概論Ⅰ", ""],
+  "水": ["", "地理歴史科教育法Ⅰ", "人文地理学", "", "", "", ""],
+  "木": ["特別支援教育", "地誌学", "史学展開演習Ⅰ", "", "", "日本時代史Ⅰ・", "ICT教育の理論と方法"],
+  "金": ["", "", "", "", "", "", ""],
+  "土": ["教育と社会", "", "", "", "", "", ""]
 };
 
 const todayIndex = new Date().getDay();
@@ -488,14 +584,14 @@ function getCurrentClassIndex() {
   const minutes = now.getHours() * 60 + now.getMinutes();
 
   const ranges = [
-  [8 * 60 + 50, 10 * 60 + 29],  // 1限
-  [10 * 60 + 30, 11 * 60 + 59], // 2限
-  [12 * 60 + 50, 14 * 60 + 29], // 3限
-  [14 * 60 + 30, 16 * 60 + 9],  // 4限
-  [16 * 60 + 10, 17 * 60 + 49], // 5限
-  [17 * 60 + 50, 19 * 60 + 29], // 6限
-  [19 * 60 + 30, 21 * 60 + 9]   // 7限
-];
+    [8 * 60 + 50, 10 * 60 + 29],
+    [10 * 60 + 30, 11 * 60 + 59],
+    [12 * 60 + 50, 14 * 60 + 29],
+    [14 * 60 + 30, 16 * 60 + 9],
+    [16 * 60 + 10, 17 * 60 + 49],
+    [17 * 60 + 50, 19 * 60 + 29],
+    [19 * 60 + 30, 21 * 60 + 9]
+  ];
 
   for (let i = 0; i < ranges.length; i++) {
     if (minutes >= ranges[i][0] && minutes <= ranges[i][1]) {
@@ -507,6 +603,21 @@ function getCurrentClassIndex() {
 
 const nowIndex = getCurrentClassIndex();
 const table = document.getElementById("timetable");
+
+function openLessonModal(title) {
+  const modal = document.getElementById("lessonModal");
+  const modalTitle = document.getElementById("modalTitle");
+  if (!modal || !modalTitle) return;
+
+  modalTitle.textContent = title;
+  modal.classList.remove("hidden");
+}
+
+function closeLessonModal() {
+  const modal = document.getElementById("lessonModal");
+  if (!modal) return;
+  modal.classList.add("hidden");
+}
 
 /* タイトル行 */
 const titleTr = document.createElement("tr");
@@ -570,9 +681,10 @@ table.appendChild(headerTr);
 /* 本体 */
 rows.forEach(row => {
   const tr = document.createElement("tr");
-if (row.type === "class") {
-  tr.dataset.key = row.key;
-}
+
+  if (row.type === "class") {
+    tr.dataset.key = row.key;
+  }
 
   if (row.type === "lunch") {
     const th = document.createElement("th");
@@ -614,30 +726,38 @@ if (row.type === "class") {
     td.className = "class-cell";
 
     if (day === today) td.classList.add("today");
+
     if (day === today && row.type === "class" && row.key === nowIndex) {
+      if (nowIndex <= 1) {
+        td.classList.add("now-morning");
+      } else if (nowIndex <= 3) {
+        td.classList.add("now-day");
+      } else if (nowIndex <= 5) {
+        td.classList.add("now-evening");
+      } else {
+        td.classList.add("now-night");
+      }
+    }
 
-  if (nowIndex <= 1) {
-    td.classList.add("now-morning");   // 1-2限
-  } else if (nowIndex <= 3) {
-    td.classList.add("now-day");       // 3-4限
-  } else if (nowIndex <= 5) {
-    td.classList.add("now-evening");   // 5-6限
-  } else {
-    td.classList.add("now-night");     // 7限
-  }
+    const rawText = timetable[day][row.key] || "";
+    const text = Array.from(rawText).slice(0, 8).join("");
 
-}
+    // 空欄でも、今の授業なら pill を作る
+    if (text || (day === today && row.type === "class" && row.key === nowIndex)) {
+      const pill = document.createElement("div");
+      pill.className = "lesson-pill";
+      pill.textContent = text || "―";
 
-const rawText = timetable[day][row.key] || "";
-const text = Array.from(rawText).slice(0, 8).join("");
+      // 授業があるときだけポップアップ有効
+      if (rawText) {
+        pill.classList.add("has-detail");
+        pill.addEventListener("click", () => {
+          openLessonModal(rawText);
+        });
+      }
 
-// 空欄でも、今の授業なら pill を作る
-if (text || (day === today && row.type === "class" && row.key === nowIndex)) {
-  const pill = document.createElement("div");
-  pill.className = "lesson-pill";
-  pill.textContent = text || "―";
-  td.appendChild(pill);
-}
+      td.appendChild(pill);
+    }
 
     tr.appendChild(td);
   });
@@ -653,12 +773,8 @@ function positionPortrait() {
   if (!wrap || headers.length === 0) return;
 
   if (window.innerHeight > window.innerWidth) {
-
     const todayHeader = headers[todayIndexInWeek];
-
     const left = todayHeader.offsetLeft;
-
-    // ← これが重要（固定列の幅）
     const leftColWidth = document.querySelector(".time-col").offsetWidth;
 
     wrap.scrollLeft = Math.max(0, left - leftColWidth);
@@ -711,14 +827,15 @@ window.addEventListener("resize", applyLayout);
 window.addEventListener("orientationchange", () => {
   setTimeout(applyLayout, 120);
 });
-  window.addEventListener("pageshow", () => {
+
+window.addEventListener("pageshow", () => {
   setTimeout(() => {
     applyLayout();
     updateNowClass();
   }, 120);
 });
 
-  function updateNowClass() {
+function updateNowClass() {
   const newNowIndex = getCurrentClassIndex();
 
   // いったん今の授業色を全部外す
@@ -760,8 +877,9 @@ window.addEventListener("orientationchange", () => {
 
 // 1分ごとに更新
 setInterval(updateNowClass, 60000);
-  updateNowClass();
-  document.addEventListener("visibilitychange", () => {
+updateNowClass();
+
+document.addEventListener("visibilitychange", () => {
   if (!document.hidden) {
     setTimeout(() => {
       applyLayout();
@@ -769,11 +887,23 @@ setInterval(updateNowClass, 60000);
     }, 120);
   }
 });
+
+// 閉じる処理
+document.getElementById("modalClose")?.addEventListener("click", closeLessonModal);
+document.querySelector(".modal-backdrop")?.addEventListener("click", closeLessonModal);
+
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") {
+    closeLessonModal();
+  }
+});
 </script>
+
 <script>
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("service-worker.js");
 }
 </script>
+
 </body>
 </html>
