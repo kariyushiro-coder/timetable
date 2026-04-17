@@ -102,9 +102,23 @@ body {
 }
 
 .hero-title {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1.2;
+}
+
+.hero-title-main {
   font-size: 24px;
   font-weight: 800;
   letter-spacing: 0.02em;
+}
+
+.hero-title-sub {
+  font-size: 15px;   /* 24px の約62.5% */
+  font-weight: 700;
+  opacity: 0.95;
+  letter-spacing: 0.01em;
 }
 
 .hero-sub {
