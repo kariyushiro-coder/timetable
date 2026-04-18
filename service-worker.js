@@ -1,8 +1,10 @@
-const CACHE_NAME = "timetable-v1.0.15";//更新時にvをカウントアップすること
+importScripts("./version.js");
+const CACHE_NAME = "timetable-v" + VERSION;//version.jsで管理
 const APP_SHELL = [
   "./",
   "./index.html",
   "./manifest.json",
+  "./version.js",
   "./icon-192.png",
   "./icon-512.png"
 ];
