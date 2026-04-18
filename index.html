@@ -819,8 +819,9 @@ rows.forEach(row => {
 
   pill.classList.add("has-detail");
   pill.addEventListener("click", () => {
-    openLessonModal(rawText);
-  });
+  const title = isTeachingCourse ? "【教職】" + rawText : rawText;
+  openLessonModal(title);
+});
 
   td.appendChild(pill);
 }
