@@ -573,17 +573,25 @@ table tr th:first-of-type {
     0 6px 0 #2196f3,   /* ←青の土台 */
     0 10px 16px rgba(0,0,0,0.15);
 }
-#versionLabel {
-  position: fixed;
-  left: 8px;
-  bottom: 6px;
+.time-col.version-anchor {
+  position: sticky;
+  left: 0;
+}
+
+.time-version {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 2px);
+  transform: translateX(-50%);
   font-size: 10px;
-  color: rgba(0,0,0,0.5);
-  background: rgba(255,255,255,0.6);
-  padding: 2px 6px;
+  line-height: 1;
+  color: rgba(0,0,0,0.55);
+  background: rgba(255,255,255,0.75);
+  padding: 1px 5px;
   border-radius: 6px;
-  z-index: 9999;
+  white-space: nowrap;
   pointer-events: none;
+  z-index: 6;
 }
 </style>
 </head>
@@ -621,6 +629,7 @@ table tr th:first-of-type {
 </div>
 <div id="versionLabel">v1.0.11</div>
 <script>
+const VERSION = "v1.0.14";
 const days = ["月","火","水","木","金","土"];
 
 const rows = [
@@ -786,9 +795,19 @@ rows.forEach(row => {
   }
 
   const th = document.createElement("th");
-  th.className = "time-col";
-  th.textContent = row.time;
-  tr.appendChild(th);
+th.className = "time-col";
+th.textContent = row.time;
+
+if (row.key === 6) {
+  th.classList.add("version-anchor");
+
+  const version = document.createElement("div");
+  version.className = "time-version";
+  version.textContent = VERSION;
+  th.appendChild(version);
+}
+
+tr.appendChild(th);
 
   days.forEach(day => {
     const td = document.createElement("td");
