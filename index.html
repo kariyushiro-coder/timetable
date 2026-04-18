@@ -573,6 +573,18 @@ table tr th:first-of-type {
     0 6px 0 #2196f3,   /* ←青の土台 */
     0 10px 16px rgba(0,0,0,0.15);
 }
+#versionLabel {
+  position: fixed;
+  left: 8px;
+  bottom: 6px;
+  font-size: 10px;
+  color: rgba(0,0,0,0.5);
+  background: rgba(255,255,255,0.6);
+  padding: 2px 6px;
+  border-radius: 6px;
+  z-index: 9999;
+  pointer-events: none;
+}
 </style>
 </head>
 
@@ -607,7 +619,7 @@ table tr th:first-of-type {
     <div id="modalTitle" class="modal-title"></div>
   </div>
 </div>
-
+<div id="versionLabel">v1.0.11</div>
 <script>
 const days = ["月","火","水","木","金","土"];
 
