@@ -1,4 +1,4 @@
-const CACHE_NAME = "timetable-v1.0.11";//更新時にvをカウントアップすること
+const CACHE_NAME = "timetable-v1.0.12";//更新時にvをカウントアップすること
 const APP_SHELL = [
   "./",
   "./index.html",
