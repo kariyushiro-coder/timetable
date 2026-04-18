@@ -804,7 +804,13 @@ rows.forEach(row => {
       rawText.includes("特別支援教育") ||
       rawText.includes("ICT教育の理論と方法") ||
       rawText.includes("教育と社会");
-    const text = Array.from(rawText).slice(0, 8).join("");
+    let displayText = rawText;
+
+if (isTeachingCourse) {
+  displayText = "【教職】" + rawText;
+}
+
+const text = Array.from(displayText).slice(0, 8).join("");
 
     // 授業があるときだけ pill を作る
     if (text) {
