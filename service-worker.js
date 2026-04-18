@@ -1,5 +1,6 @@
 importScripts("./version.js");
-const CACHE_NAME = "timetable-v" + VERSION;//version.jsで管理
+
+const CACHE_NAME = "timetable-v" + VERSION; // version.jsで管理
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -37,13 +38,18 @@ self.addEventListener("activate", event => {
 self.addEventListener("fetch", event => {
   const request = event.request;
 
+  // GET以外は処理しない
+  if (request.method !== "GET") return;
+
   // ナビゲーションは常にネット優先
   if (request.mode === "navigate") {
     event.respondWith(
       fetch(request)
         .then(response => {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put("./index.html", copy));
+          if (response && response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then(cache => cache.put("./index.html", copy));
+          }
           return response;
         })
         .catch(() => caches.match("./index.html"))
@@ -56,8 +62,10 @@ self.addEventListener("fetch", event => {
     caches.match(request).then(cached => {
       const networkFetch = fetch(request)
         .then(response => {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
+          if (response && response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
+          }
           return response;
         })
         .catch(() => cached);
