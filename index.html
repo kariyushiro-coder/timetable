@@ -673,6 +673,7 @@ const todayIndex = new Date().getDay();
 const dayMap = ["日","月","火","水","木","金","土"];
 const today = dayMap[todayIndex];
 const todayIndexInWeek = Math.max(0, days.indexOf(today));
+const isSchoolDay = todayIndexInWeek !== -1;
 
 function getCurrentClassIndex() {
   const now = new Date();
@@ -953,6 +954,8 @@ window.addEventListener("pageshow", () => {
 function updateNowClass() {
   const newNowIndex = getCurrentClassIndex();
 
+  if (!isSchoolDay) return;
+  
   // いったん今の授業色を全部外す
   document.querySelectorAll(".class-cell").forEach(td => {
     td.classList.remove("now-morning", "now-day", "now-evening", "now-night");
