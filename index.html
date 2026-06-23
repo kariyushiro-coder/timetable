@@ -633,7 +633,7 @@ table tr th:first-of-type {
 
 <script>
 
-const days = ["月","火","水","木","金","土"];
+const days = ["月","火","水","木","金","土","日"];
 
 const rows = [
   { type: "class", time: "1限\n8:50",  key: 0 },
@@ -652,7 +652,8 @@ const timetable = {
   "水": ["", "地理歴史科教育法Ⅰ", "人文地理学", "", "", "", ""],
   "木": ["特別支援教育", "地誌学", "史学展開演習Ⅰ", "", "", "日本時代史Ⅰ", "ICT教育の理論と方法"],
   "金": ["", "", "", "", "", "", ""],
-  "土": ["教育と社会", "", "", "", "", "", ""]
+  "土": ["教育と社会", "", "", "", "", "", ""],
+  "日": ["", "", "", "", "", "", ""]
 };
 
 const todayIndex = new Date().getDay();
@@ -722,7 +723,7 @@ titleMain.textContent = "今日の授業";
 titleMain.style.textAlign = "center";
 titleTr.appendChild(titleMain);
 
-const titleRemain = 5 - todayIndexInWeek;
+const titleRemain = 6 - todayIndexInWeek;
 if (titleRemain > 0) {
   const titleMerged = document.createElement("th");
   titleMerged.className = "lunch-merge";
@@ -747,7 +748,8 @@ const dayLabels = {
   "水": "💧水💧",
   "木": "🌳木🌳",
   "金": "💰金💰",
-  "土": "🍺土🍺"
+  "土": "🍺土🍺",
+  "日": "☀️日☀️"
 };
 
 days.forEach(day => {
