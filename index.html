@@ -723,7 +723,7 @@ titleMain.textContent = "今日の授業";
 titleMain.style.textAlign = "center";
 titleTr.appendChild(titleMain);
 
-const titleRemain = 6 - todayIndexInWeek;
+const titleRemain = days.length - 1 - todayIndexInWeek;
 if (titleRemain > 0) {
   const titleMerged = document.createElement("th");
   titleMerged.className = "lunch-merge";
@@ -787,7 +787,7 @@ rows.forEach(row => {
     main.textContent = row.label;
     tr.appendChild(main);
 
-    const remain = 5 - todayIndexInWeek;
+    const remain = days.length - 1 - todayIndexInWeek;
     if (remain > 0) {
       const merged = document.createElement("td");
       merged.className = "lunch-merge";
